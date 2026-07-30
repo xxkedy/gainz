@@ -172,12 +172,41 @@ h1 span{color:var(--accent)}
   transition:.2s;z-index:20;white-space:nowrap
 }
 .toast.show{opacity:1;transform:translate(-50%,0)}
+.routine-tabs{
+  display:flex;gap:9px;margin:0 0 16px;padding:5px;background:rgba(20,20,25,.82);
+  border:1px solid var(--line);border-radius:14px;max-width:760px
+}
+.routine-tab{
+  flex:1;border:1px solid transparent;background:transparent;color:var(--sub);border-radius:10px;
+  padding:12px 14px;text-align:left;transition:.15s
+}
+.routine-tab strong{display:block;font-size:15px;color:inherit}
+.routine-tab span{display:block;font-size:10px;margin-top:2px;color:var(--dim)}
+.routine-tab[aria-selected="true"]{background:var(--accent);color:#fff;border-color:var(--accent)}
+.routine-tab[aria-selected="true"] span{color:rgba(255,255,255,.75)}
+.routine-tab:active{transform:scale(.99)}
+.video-list{display:grid;gap:8px;margin-top:10px}
+.video-choice{
+  width:100%;display:grid;grid-template-columns:34px minmax(0,1fr) auto;align-items:center;gap:10px;
+  border:1px solid var(--line);background:var(--card2);color:var(--text);border-radius:11px;padding:10px;text-align:left
+}
+.video-choice[aria-selected="true"]{border-color:var(--accent);background:#211d3a}
+.video-choice-num{
+  width:30px;height:30px;border-radius:8px;background:#292442;color:var(--accent2);
+  display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900
+}
+.video-choice[aria-selected="true"] .video-choice-num{background:var(--accent);color:#fff}
+.video-choice-title{font-size:12.5px;font-weight:800;line-height:1.35}
+.video-choice-meta{font-size:10px;color:var(--sub);margin-top:2px}
+.video-choice-play{font-size:10px;color:var(--accent2);font-weight:850}
 @media(max-width:900px){
   .wrap{max-width:640px;margin:0 auto;padding-left:16px;padding-right:16px}
   .page-grid{display:block}
   .side-col{margin-top:12px}
   .video-card{position:static}
   .plan{grid-template-columns:1fr}
+  .routine-tabs{max-width:none;overflow-x:auto}
+  .routine-tab{min-width:104px;padding:11px 12px}
 }
 @media(max-width:370px){
   .step-name{font-size:26px}
@@ -198,13 +227,19 @@ h1 span{color:var(--accent)}
     <a class="back" href="./">通常画面へ</a>
   </header>
 
+  <nav class="routine-tabs" id="routineTabs" aria-label="トレーニングメニュー">
+    <button class="routine-tab" type="button" data-routine="mix" aria-selected="true"><strong>MIX</strong><span>今の4種目</span></button>
+    <button class="routine-tab" type="button" data-routine="push" aria-selected="false"><strong>PUSH日</strong><span>胸・肩・三頭・腹</span></button>
+    <button class="routine-tab" type="button" data-routine="pull" aria-selected="false"><strong>PULL日</strong><span>背中・二頭・腹</span></button>
+  </nav>
+
   <div class="page-grid">
     <main class="main-col">
       <section class="start" id="startView">
         <div class="card hero">
-          <div class="kicker">今日の固定メニュー</div>
-          <div class="hero-title">懸垂から迷わず4種目</div>
-          <div class="hero-sub">懸垂動画を見ながら開始。完了を押すたび、次の種目と75秒休憩を表示する。</div>
+          <div class="kicker" id="routineKicker">今日の固定メニュー</div>
+          <div class="hero-title" id="routineTitle">懸垂から迷わず4種目</div>
+          <div class="hero-sub" id="routineSub">懸垂動画を見ながら開始。完了を押すたび、次の種目と75秒休憩を表示する。</div>
           <div class="plan" id="planList"></div>
           <button class="spotify" id="spotifyStart" type="button">🎧 Spotifyを開く</button>
           <button class="primary" id="startBtn" type="button">▶ 30分トレーニング開始</button>
@@ -256,7 +291,7 @@ h1 span{color:var(--accent)}
       <section class="done-view" id="doneView" hidden>
         <div class="card done-card">
           <div class="done-mark">✓</div>
-          <div class="done-title">今日の4種目完了</div>
+          <div class="done-title" id="doneTitle">今日の4種目完了</div>
           <div class="done-sub" id="doneSummary">30分以内に終了</div>
           <button class="primary" id="againBtn" type="button">もう一度やる</button>
           <a class="secondary" href="./" style="display:block;text-decoration:none">通常画面へ戻る</a>
@@ -268,19 +303,20 @@ h1 span{color:var(--accent)}
       <section class="card video-card">
         <div class="video-head">
           <div>
-            <div class="video-kicker">PULL-UP VIDEO</div>
-            <div class="video-title">懸垂・背中を一緒にやる</div>
-            <div class="video-time">0:30〜4:03を再生</div>
+            <div class="video-kicker" id="videoKicker">TRAIN WITH VIDEO</div>
+            <div class="video-title" id="videoTitle">懸垂・背中を一緒にやる</div>
+            <div class="video-time" id="videoTime">0:30〜4:03を再生</div>
           </div>
-          <a class="video-open" href="https://youtu.be/hj2j-RsUiSE?t=30" target="_blank" rel="noopener">YouTubeで開く</a>
+          <a class="video-open" id="videoOpen" href="https://youtu.be/hj2j-RsUiSE?t=30" target="_blank" rel="noopener">YouTubeで開く</a>
         </div>
         <div class="video-wrap">
-          <iframe id="pullupVideo"
-            title="懸垂・背中トレーニング動画"
+          <iframe id="trainingVideo"
+            title="トレーニング動画"
             allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
             allowfullscreen></iframe>
         </div>
-        <div class="video-note" id="videoNote">動画を見てから「30分トレーニング開始」を押してもOK。</div>
+        <div class="video-note" id="videoNote">再生ボタンで一緒にトレーニングできる。</div>
+        <div class="video-list" id="videoList"></div>
       </section>
 
       <section class="card">
@@ -294,21 +330,70 @@ h1 span{color:var(--accent)}
 <div class="toast" id="toast"></div>
 
 <script>
-const PLAN=[
-  {name:"懸垂",detail:"できる回数",note:"反動を使わず、肩甲骨から引く。終わったら下を押す。",rest:75},
-  {name:"ベンチプレス",detail:"15kg × 8回",note:"肩甲骨を寄せて胸を張る。肘を開きすぎない。",rest:75},
-  {name:"ベンチ腹筋",detail:"10回 × 2セット",note:"反動を使わず、腹で起きる。1セットごとに休んでOK。",rest:75},
-  {name:"プッシュアップバー",detail:"8回",note:"体は一直線。胸をバーの間へ下ろす。",rest:0}
-];
-const VIDEO_ID="hj2j-RsUiSE";
-const STATE_KEY="gainz.guided.state.v1";
+const ROUTINES={
+  mix:{
+    label:"MIX",kicker:"今日のMIXメニュー",title:"懸垂から迷わず4種目",
+    sub:"今やっている短い全身メニュー。完了を押すたび、次の種目と75秒休憩を表示する。",
+    plan:[
+      {name:"懸垂",detail:"できる回数",note:"反動を使わず、肩甲骨から引く。",rest:75,video:0},
+      {name:"ベンチプレス",detail:"15kg × 8回",note:"肩甲骨を寄せて胸を張る。肘を開きすぎない。",rest:75,video:1},
+      {name:"ベンチ腹筋",detail:"10回 × 2セット",note:"反動を使わず、腹で起きる。",rest:75,video:2},
+      {name:"プッシュアップバー",detail:"8回",note:"体は一直線。胸をバーの間へ下ろす。",rest:0,video:3}
+    ],
+    videos:[
+      {kicker:"PULL-UP",title:"懸垂・背中を一緒にやる",meta:"0:30〜4:03",id:"hj2j-RsUiSE",start:30,end:243},
+      {kicker:"BENCH FORM",title:"ダンベルベンチプレスのフォーム",meta:"フォーム確認",id:"pctyhH_HYxc"},
+      {kicker:"ABS 2 MIN",title:"腹筋2分 地獄メニュー",meta:"一緒にやる",id:"R4vb8poJnv0"},
+      {kicker:"CHEST 2 MIN",title:"プッシュアップバー2分",meta:"一緒にやる",id:"ZI7URsS6VrA"}
+    ]
+  },
+  push:{
+    label:"PUSH日",kicker:"押す日のメニュー",title:"胸・肩・三頭・腹を4種目",
+    sub:"胸を中心に押す動作をまとめる日。重すぎる日は回数を減らしてフォーム優先。",
+    plan:[
+      {name:"ベンチプレス",detail:"15kg × 8回",note:"肩甲骨を寄せて胸を張る。",rest:75,video:0},
+      {name:"プッシュアップバー",detail:"8回 × 2セット",note:"頭からかかとまで一直線。",rest:75,video:1},
+      {name:"ショルダープレス",detail:"10kg × 10回",note:"腹に力を入れて腰を反らない。",rest:75,video:2},
+      {name:"ベンチ腹筋",detail:"10回 × 2セット",note:"反動を使わず腹で起きる。",rest:0,video:3}
+    ],
+    videos:[
+      {kicker:"BENCH FORM",title:"ダンベルベンチプレスのフォーム",meta:"フォーム確認",id:"pctyhH_HYxc"},
+      {kicker:"CHEST 2 MIN",title:"プッシュアップバー2分",meta:"一緒にやる",id:"ZI7URsS6VrA"},
+      {kicker:"SHOULDER",title:"ショルダープレスのフォーム",meta:"フォーム確認",id:"tp9RRXCvnko"},
+      {kicker:"ABS 2 MIN",title:"腹筋2分 地獄メニュー",meta:"一緒にやる",id:"R4vb8poJnv0"}
+    ]
+  },
+  pull:{
+    label:"PULL日",kicker:"引く日のメニュー",title:"背中・二頭・腹を4種目",
+    sub:"懸垂から始めて背中を引く日。腕だけでなく肩甲骨から動かす。",
+    plan:[
+      {name:"懸垂",detail:"できる回数 × 3セット",note:"疲れる前に実施。肩甲骨から引く。",rest:75,video:0},
+      {name:"ワンハンドダンベルロウ",detail:"18kg・左右10回",note:"背中を丸めず、肘を腰へ引く。",rest:75,video:1},
+      {name:"ダンベルカール",detail:"8kg × 10回",note:"肘を体の横に固定する。",rest:75,video:2},
+      {name:"ベンチ腹筋",detail:"10回 × 2セット",note:"反動を使わず腹で起きる。",rest:0,video:3}
+    ],
+    videos:[
+      {kicker:"PULL-UP",title:"懸垂・背中を一緒にやる",meta:"0:30〜4:03",id:"hj2j-RsUiSE",start:30,end:243},
+      {kicker:"ROW FORM",title:"ワンハンドダンベルロウ",meta:"フォーム確認",id:"71NcdOwfMv8"},
+      {kicker:"BACK 6 MIN",title:"背筋6分 器具なし",meta:"一緒にやる",id:"Q-LGg-58_ZU"},
+      {kicker:"ABS 6 MIN",title:"腹筋6分 シックスパック",meta:"一緒にやる",id:"yfF-Q2NhVnE"}
+    ]
+  }
+};
+const STATE_KEY="gainz.guided.state.v2";
 const HISTORY_KEY="gainz.guided.history.v1";
+const ROUTINE_KEY="gainz.guided.routine.v1";
 const SPOTIFY_KEY="gainz.guided.spotify.v1";
 const DEFAULT_SPOTIFY="https://open.spotify.com/";
 const $=id=>document.getElementById(id);
 let tickIv=null;
+let selectedRoutine=localStorage.getItem(ROUTINE_KEY)||"mix";
+if(!ROUTINES[selectedRoutine])selectedRoutine="mix";
+let activeVideo=0;
 let state=loadState();
 
+function routine(key=selectedRoutine){return ROUTINES[key]||ROUTINES.mix;}
+function plan(){return routine(state.active?state.routine:selectedRoutine).plan;}
 function loadState(){
   try{return JSON.parse(localStorage.getItem(STATE_KEY))||{active:false,finished:false};}
   catch(e){return{active:false,finished:false};}
@@ -319,199 +404,139 @@ function saveHistory(rows){localStorage.setItem(HISTORY_KEY,JSON.stringify(rows.
 function spotifyUrl(){return localStorage.getItem(SPOTIFY_KEY)||DEFAULT_SPOTIFY;}
 function fmt(sec){sec=Math.max(0,Math.ceil(sec));return `${Math.floor(sec/60)}:${String(sec%60).padStart(2,"0")}`;}
 function elapsedText(ms){const m=Math.max(1,Math.round(ms/60000));return `${m}分`;}
-function toast(text){
-  const el=$("toast");
-  el.textContent=text;
-  el.classList.add("show");
-  setTimeout(()=>el.classList.remove("show"),1600);
-}
+function toast(text){const el=$("toast");el.textContent=text;el.classList.add("show");setTimeout(()=>el.classList.remove("show"),1600);}
 function beep(){
-  try{
-    const C=window.AudioContext||window.webkitAudioContext;
-    const a=new C(),o=a.createOscillator(),g=a.createGain();
-    o.frequency.value=880;
-    g.gain.setValueAtTime(.08,a.currentTime);
-    g.gain.exponentialRampToValueAtTime(.001,a.currentTime+.25);
-    o.connect(g);g.connect(a.destination);o.start();o.stop(a.currentTime+.25);
-  }catch(e){}
+  try{const C=window.AudioContext||window.webkitAudioContext,a=new C(),o=a.createOscillator(),g=a.createGain();o.frequency.value=880;g.gain.setValueAtTime(.08,a.currentTime);g.gain.exponentialRampToValueAtTime(.001,a.currentTime+.25);o.connect(g);g.connect(a.destination);o.start();o.stop(a.currentTime+.25);}catch(e){}
 }
-function videoUrl(autoplay){
-  return `https://www.youtube.com/embed/${VIDEO_ID}?start=30&end=243&rel=0&playsinline=1&autoplay=${autoplay?1:0}`;
+function currentRoutineKey(){return state.active?state.routine:selectedRoutine;}
+function videoUrl(v,autoplay){
+  const q=[`rel=0`,`playsinline=1`,`autoplay=${autoplay?1:0}`];
+  if(v.start)q.push(`start=${v.start}`);
+  if(v.end)q.push(`end=${v.end}`);
+  return `https://www.youtube.com/embed/${v.id}?${q.join("&")}`;
 }
-function setVideo(autoplay=false){
-  $("pullupVideo").src=videoUrl(autoplay);
-  $("videoNote").textContent=autoplay
-    ?"懸垂動画を再生中。終わったら「完了して次へ」。"
-    :"再生ボタンで懸垂動画を見られる。";
+function youtubeUrl(v){return `https://youtu.be/${v.id}${v.start?`?t=${v.start}`:""}`;}
+function setActiveVideo(index,autoplay=false){
+  const videos=routine(currentRoutineKey()).videos;
+  activeVideo=Math.max(0,Math.min(index,videos.length-1));
+  const v=videos[activeVideo];
+  $("videoKicker").textContent=v.kicker;
+  $("videoTitle").textContent=v.title;
+  $("videoTime").textContent=v.meta;
+  $("videoOpen").href=youtubeUrl(v);
+  $("trainingVideo").src=videoUrl(v,autoplay);
+  $("videoNote").textContent=autoplay?"動画を再生中。終わったら左の完了ボタンへ。":"下の動画を選ぶと、ここで再生できる。";
+  renderVideoList();
 }
-function openSpotify(){
-  setVideo(false);
-  window.open(spotifyUrl(),"_blank","noopener");
+function stopVideo(){setActiveVideo(activeVideo,false);}
+function renderVideoList(){
+  const videos=routine(currentRoutineKey()).videos;
+  $("videoList").innerHTML=videos.map((v,i)=>`<button class="video-choice" type="button" data-video="${i}" aria-selected="${i===activeVideo}"><span class="video-choice-num">${i+1}</span><span><span class="video-choice-title">${v.title}</span><span class="video-choice-meta">${v.meta}</span></span><span class="video-choice-play">▶ 再生</span></button>`).join("");
+  $("videoList").querySelectorAll("[data-video]").forEach(b=>b.addEventListener("click",()=>setActiveVideo(+b.dataset.video,true)));
 }
+function openSpotify(){stopVideo();window.open(spotifyUrl(),"_blank","noopener");}
 function setSpotify(){
   const value=prompt("SpotifyのプレイリストURLを貼って",spotifyUrl());
   if(value===null)return;
   const url=value.trim();
-  if(url&&!/^https:\/\/(open\.)?spotify\.com\//i.test(url)){
-    toast("SpotifyのURLを入れて");
-    return;
-  }
-  localStorage.setItem(SPOTIFY_KEY,url||DEFAULT_SPOTIFY);
-  toast("Spotifyリンクを保存 ✓");
+  if(url&&!/^https:\/\/(open\.)?spotify\.com\//i.test(url)){toast("SpotifyのURLを入れて");return;}
+  localStorage.setItem(SPOTIFY_KEY,url||DEFAULT_SPOTIFY);toast("Spotifyリンクを保存 ✓");
 }
-function renderPlan(){
-  $("planList").innerHTML=PLAN.map((x,i)=>
-    `<div class="plan-row"><span class="plan-num">${i+1}</span><span class="plan-text">${x.name}</span><span class="plan-detail">${x.detail}</span></div>`
-  ).join("");
+function selectRoutine(key){
+  if(state.active){toast("途中終了してからメニューを切替");return;}
+  if(!ROUTINES[key])return;
+  selectedRoutine=key;
+  localStorage.setItem(ROUTINE_KEY,key);
+  activeVideo=0;
+  renderRoutine();
+  setActiveVideo(0,false);
+}
+function renderRoutineTabs(){
+  document.querySelectorAll(".routine-tab").forEach(b=>b.setAttribute("aria-selected",String(b.dataset.routine===currentRoutineKey())));
+}
+function renderRoutine(){
+  const r=routine(currentRoutineKey());
+  renderRoutineTabs();
+  $("routineKicker").textContent=r.kicker;
+  $("routineTitle").textContent=r.title;
+  $("routineSub").textContent=r.sub;
+  $("startBtn").textContent=`▶ ${r.label}を30分開始`;
+  $("planList").innerHTML=r.plan.map((x,i)=>`<div class="plan-row"><span class="plan-num">${i+1}</span><span class="plan-text">${x.name}</span><span class="plan-detail">${x.detail}</span></div>`).join("");
 }
 function renderHistory(){
   const rows=history(),el=$("history");
-  el.innerHTML=rows.length
-    ?rows.slice(0,5).map(r=>`<div class="history-row"><span>${r.date} ${r.status==="complete"?"完了":"途中終了"}</span><span>${r.completed}/4・${r.duration}</span></div>`).join("")
-    :`<div class="empty">まだ記録なし</div>`;
+  el.innerHTML=rows.length?rows.slice(0,5).map(r=>`<div class="history-row"><span>${r.date} ${r.routine||"MIX"}・${r.status==="complete"?"完了":"途中終了"}</span><span>${r.completed}/${r.total||4}・${r.duration}</span></div>`).join(""):`<div class="empty">まだ記録なし</div>`;
 }
-function show(which){
-  $("startView").hidden=which!=="start";
-  $("sessionView").hidden=which!=="session";
-  $("doneView").hidden=which!=="done";
-}
+function show(which){$("startView").hidden=which!=="start";$("sessionView").hidden=which!=="session";$("doneView").hidden=which!=="done";}
 function startSession(){
-  const now=Date.now();
-  state={
-    active:true,finished:false,step:0,completed:[],
-    startedAt:now,sessionEnd:now+30*60*1000,restEnd:0
-  };
-  saveState();
-  show("session");
-  renderSession();
-  setVideo(true);
-  startTick();
+  const now=Date.now(),r=routine(selectedRoutine);
+  state={active:true,finished:false,routine:selectedRoutine,step:0,completed:[],startedAt:now,sessionEnd:now+30*60*1000,restEnd:0};
+  saveState();renderRoutine();show("session");renderSession();setActiveVideo(r.plan[0].video||0,true);startTick();
 }
 function renderSession(){
-  if(!state.active){
-    show(state.finished?"done":"start");
-    return;
-  }
-  const step=Math.min(state.step,PLAN.length-1),item=PLAN[step];
-  $("progressCount").textContent=`${step+1} / ${PLAN.length}`;
-  $("progressBar").style.width=`${(state.completed.length/PLAN.length)*100}%`;
+  if(!state.active){show(state.finished?"done":"start");return;}
+  const r=routine(state.routine),p=r.plan,step=Math.min(state.step,p.length-1),item=p[step];
+  renderRoutineTabs();
+  $("progressCount").textContent=`${step+1} / ${p.length}`;
+  $("progressBar").style.width=`${(state.completed.length/p.length)*100}%`;
   $("doneCount").textContent=`${state.completed.length}種目`;
-  $("stepTag").textContent=`STEP ${step+1}`;
+  $("stepTag").textContent=`${r.label}・STEP ${step+1}`;
   $("stepName").textContent=item.name;
   $("stepDetail").textContent=item.detail;
   $("stepNote").textContent=item.note;
   const resting=state.restEnd>Date.now();
-  $("currentCard").hidden=resting;
-  $("restView").hidden=!resting;
+  $("currentCard").hidden=resting;$("restView").hidden=!resting;
   if(resting)$("restNext").textContent=`次：${item.name} ${item.detail}`;
   updateClocks();
 }
 function completeStep(){
   if(!state.active||state.restEnd>Date.now())return;
-  const index=state.step;
+  const p=plan(),index=state.step;
   if(!state.completed.includes(index))state.completed.push(index);
-  if(index===0)setVideo(false);
-  if(index>=PLAN.length-1){
-    finish("complete");
-    return;
-  }
-  state.step=index+1;
-  state.restEnd=Date.now()+PLAN[index].rest*1000;
-  saveState();
-  renderSession();
-  startTick();
+  if(index>=p.length-1){finish("complete");return;}
+  state.step=index+1;state.restEnd=Date.now()+p[index].rest*1000;saveState();
+  setActiveVideo(p[state.step].video||0,false);renderSession();startTick();
 }
-function skipRest(){
-  state.restEnd=0;
-  saveState();
-  beep();
-  renderSession();
-  toast("次の種目へ");
-}
+function skipRest(){state.restEnd=0;saveState();beep();renderSession();toast("次の種目へ");}
 function updateClocks(){
   if(!state.active)return;
   const remain=(state.sessionEnd-Date.now())/1000;
   $("sessionClock").textContent=remain>0?fmt(remain):"時間超過";
-  if(state.restEnd>Date.now()){
-    $("restClock").textContent=fmt((state.restEnd-Date.now())/1000);
-  }else if(!$("restView").hidden){
-    state.restEnd=0;
-    saveState();
-    beep();
-    renderSession();
-    toast("休憩おわり ✓");
-  }
+  if(state.restEnd>Date.now())$("restClock").textContent=fmt((state.restEnd-Date.now())/1000);
+  else if(!$("restView").hidden){state.restEnd=0;saveState();beep();renderSession();toast("休憩おわり ✓");}
 }
-function startTick(){
-  clearInterval(tickIv);
-  tickIv=setInterval(updateClocks,250);
-}
+function startTick(){clearInterval(tickIv);tickIv=setInterval(updateClocks,250);}
 function finish(status){
-  clearInterval(tickIv);
-  setVideo(false);
-  const now=Date.now(),completed=state.completed.length;
-  const rows=history();
-  rows.unshift({
-    date:new Date(now).toLocaleDateString("ja-JP",{month:"numeric",day:"numeric"}),
-    status,completed,duration:elapsedText(now-state.startedAt),time:now
-  });
+  clearInterval(tickIv);stopVideo();
+  const now=Date.now(),p=plan(),r=routine(state.routine),completed=state.completed.length,rows=history();
+  rows.unshift({date:new Date(now).toLocaleDateString("ja-JP",{month:"numeric",day:"numeric"}),routine:r.label,status,completed,total:p.length,duration:elapsedText(now-state.startedAt),time:now});
   saveHistory(rows);
-  state={
-    active:false,
-    finished:status==="complete",
-    lastDuration:elapsedText(now-(state.startedAt||now))
-  };
-  saveState();
-  renderHistory();
-  if(status==="complete"){
-    $("doneSummary").textContent=`${state.lastDuration}で終了・記録保存済み`;
-    show("done");
-    beep();
-  }else{
-    show("start");
-    toast(`${completed}/4種目を保存`);
-  }
+  state={active:false,finished:status==="complete",lastDuration:elapsedText(now-(state.startedAt||now)),lastRoutine:r.label,lastTotal:p.length};
+  saveState();renderHistory();renderRoutineTabs();
+  if(status==="complete"){$("doneTitle").textContent=`${r.label} ${p.length}種目完了`;$("doneSummary").textContent=`${state.lastDuration}で終了・記録保存済み`;show("done");beep();}
+  else{show("start");renderRoutine();toast(`${completed}/${p.length}種目を保存`);}
 }
 function resumeOrStart(){
-  if(state.active){
-    show("session");
-    renderSession();
-    setVideo(false);
-    startTick();
-  }else if(state.finished){
-    show("done");
-    $("doneSummary").textContent=`${state.lastDuration||"完了"}・記録保存済み`;
-    setVideo(false);
-  }else{
-    show("start");
-    setVideo(false);
-  }
+  if(state.active&&ROUTINES[state.routine]){selectedRoutine=state.routine;activeVideo=plan()[Math.min(state.step,plan().length-1)].video||0;renderRoutine();show("session");renderSession();setActiveVideo(activeVideo,false);startTick();}
+  else if(state.finished){renderRoutine();show("done");$("doneTitle").textContent=`${state.lastRoutine||"メニュー"} ${state.lastTotal||4}種目完了`;$("doneSummary").textContent=`${state.lastDuration||"完了"}・記録保存済み`;setActiveVideo(0,false);}
+  else{renderRoutine();show("start");setActiveVideo(0,false);}
 }
 
+document.querySelectorAll(".routine-tab").forEach(b=>b.addEventListener("click",()=>selectRoutine(b.dataset.routine)));
 $("startBtn").addEventListener("click",startSession);
 $("completeBtn").addEventListener("click",completeStep);
 $("skipRest").addEventListener("click",skipRest);
-$("stopBtn").addEventListener("click",()=>{
-  if(confirm("途中までの記録を保存して終了する？"))finish("partial");
-});
-$("againBtn").addEventListener("click",startSession);
+$("stopBtn").addEventListener("click",()=>{if(confirm("途中までの記録を保存して終了する？"))finish("partial");});
+$("againBtn").addEventListener("click",()=>{selectedRoutine=state.lastRoutine==="PUSH日"?"push":state.lastRoutine==="PULL日"?"pull":"mix";startSession();});
 $("spotifyStart").addEventListener("click",openSpotify);
 $("spotifySession").addEventListener("click",openSpotify);
 $("spotifyEdit").addEventListener("click",setSpotify);
 $("clearData").addEventListener("click",()=>{
   if(!confirm("ガイドの進行と履歴を全部消す？"))return;
-  localStorage.removeItem(STATE_KEY);
-  localStorage.removeItem(HISTORY_KEY);
-  state={active:false,finished:false};
-  renderHistory();
-  show("start");
-  setVideo(false);
-  toast("記録をリセット");
+  localStorage.removeItem(STATE_KEY);localStorage.removeItem(HISTORY_KEY);state={active:false,finished:false};renderHistory();show("start");renderRoutine();setActiveVideo(0,false);toast("記録をリセット");
 });
 
-renderPlan();
-renderHistory();
-resumeOrStart();
+renderHistory();resumeOrStart();
 </script>
 </body>
 </html>
