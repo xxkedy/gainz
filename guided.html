@@ -3,122 +3,296 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#0b0d0e">
-<title>Gainz Guided</title>
+<meta name="theme-color" content="#0a0a0c">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<title>Gainz — Guided Training</title>
 <style>
 :root{
-  --bg:#0b0d0e;--card:#14191b;--card2:#1b2225;--line:#2b3539;
-  --text:#f7faf9;--sub:#a4b0b4;--dim:#647176;
-  --amber:#ffb020;--orange:#ff7a1a;--cyan:#2dd4d7;--green:#48d483;--danger:#ff665c;
+  --bg:#0a0a0c;
+  --card:#141419;
+  --card2:#1d1d24;
+  --line:#2c2c35;
+  --text:#fafafa;
+  --sub:#a2a2ad;
+  --dim:#62626d;
+  --accent:#6d5cff;
+  --accent2:#8a7bff;
+  --amber:#ffc234;
+  --green:#46d17f;
+  --danger:#ff6a62;
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-html,body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue","Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;line-height:1.5}
+html,body{
+  min-height:100%;
+  background:
+    radial-gradient(circle at 10% 0%,rgba(109,92,255,.10),transparent 30rem),
+    var(--bg);
+  color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue","Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;
+  line-height:1.5;
+}
 button,input{font:inherit}
 button{cursor:pointer}
-.wrap{max-width:560px;margin:0 auto;padding:calc(22px + env(safe-area-inset-top)) 16px calc(36px + env(safe-area-inset-bottom))}
-.top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:18px}
-.brand{font-size:11px;letter-spacing:.18em;color:var(--cyan);text-transform:uppercase;font-weight:800}
-h1{font-size:29px;letter-spacing:-.03em;line-height:1.1;margin-top:4px}
-.back{border:1px solid var(--line);background:var(--card);color:var(--sub);border-radius:10px;padding:8px 11px;text-decoration:none;font-size:12px;font-weight:700}
-.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:17px;margin-top:12px}
-.hero{background:linear-gradient(145deg,#211a0d,var(--card) 62%);border-color:#5c451b}
-.kicker{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--amber);font-weight:900}
-.hero-title{font-size:22px;font-weight:900;margin-top:5px}
-.hero-sub{font-size:13px;color:var(--sub);margin-top:6px}
-.plan{display:grid;gap:8px;margin-top:15px}
-.plan-row{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.025);border-radius:11px;padding:10px 11px}
-.plan-num{width:25px;height:25px;border-radius:8px;background:#263033;color:var(--cyan);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900}
-.plan-text{font-size:14px;font-weight:750}.plan-detail{font-size:11px;color:var(--sub);margin-left:auto;text-align:right}
-.primary,.secondary,.danger,.spotify{width:100%;border:none;border-radius:13px;padding:15px 12px;font-weight:900;margin-top:13px}
-.primary{background:var(--amber);color:#241704}.primary:active{background:var(--orange)}
+a{color:inherit}
+.wrap{
+  width:100%;
+  max-width:none;
+  margin:0;
+  padding:calc(24px + env(safe-area-inset-top)) 4vw calc(42px + env(safe-area-inset-bottom));
+}
+.top{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:16px;
+  margin-bottom:18px;
+}
+.brand{font-size:11px;letter-spacing:.24em;color:var(--sub);text-transform:uppercase;font-weight:800}
+h1{font-size:31px;letter-spacing:-.03em;line-height:1.05;margin-top:5px}
+h1 span{color:var(--accent)}
+.mode{font-size:12px;color:var(--accent2);font-weight:800;margin-top:7px}
+.back{
+  border:1px solid var(--line);
+  background:var(--card);
+  color:var(--sub);
+  border-radius:10px;
+  padding:9px 12px;
+  text-decoration:none;
+  font-size:12px;
+  font-weight:750;
+  white-space:nowrap;
+}
+.page-grid{
+  display:grid;
+  grid-template-columns:minmax(520px,1.45fr) minmax(360px,.75fr);
+  gap:20px;
+  align-items:start;
+}
+.main-col,.side-col{min-width:0}
+.card{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:17px;
+  margin-top:12px;
+  box-shadow:0 10px 28px rgba(0,0,0,.16);
+}
+.card:first-child{margin-top:0}
+.hero{
+  background:linear-gradient(145deg,#171527,#111116 62%);
+  border-color:#3d356e;
+}
+.kicker{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--accent2);font-weight:900}
+.hero-title{font-size:23px;font-weight:900;margin-top:5px}
+.hero-sub{font-size:13px;color:var(--sub);margin-top:6px;max-width:760px}
+.plan{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-top:15px}
+.plan-row{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.035);border-radius:11px;padding:11px}
+.plan-num{
+  width:27px;height:27px;flex:none;border-radius:8px;background:#292442;color:var(--accent2);
+  display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900
+}
+.plan-text{font-size:14px;font-weight:800}
+.plan-detail{font-size:11px;color:var(--sub);margin-left:auto;text-align:right}
+.primary,.secondary,.danger,.spotify{
+  width:100%;border:none;border-radius:12px;padding:15px 12px;font-weight:900;margin-top:13px
+}
+.primary{background:var(--accent);color:#fff;box-shadow:0 7px 20px rgba(109,92,255,.24)}
+.primary:active{background:var(--accent2);transform:scale(.995)}
 .secondary{background:var(--card2);border:1px solid var(--line);color:var(--text)}
 .danger{background:transparent;border:1px solid #5a2a27;color:#ff928b}
-.spotify{background:#123024;border:1px solid #256b48;color:#69eca0}
-.session[hidden],.start[hidden],.rest[hidden],.done[hidden]{display:none}
+.spotify{background:#0e2c1a;border:1px solid #1db954;color:#3ee87a}
+.start[hidden],.session[hidden],.done-view[hidden],.rest[hidden]{display:none}
 .progress-head{display:flex;align-items:end;justify-content:space-between;gap:12px}
-.progress-label{font-size:11px;color:var(--sub);font-weight:800;letter-spacing:.08em}.progress-count{font-size:15px;font-weight:900;color:var(--cyan)}
-.bar{height:9px;background:#222b2e;border-radius:999px;overflow:hidden;margin-top:9px}.bar>i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--cyan),var(--green));transition:.25s}
+.progress-label{font-size:11px;color:var(--sub);font-weight:800;letter-spacing:.08em}
+.progress-count{font-size:15px;font-weight:900;color:var(--accent2)}
+.bar{height:9px;background:#25252d;border-radius:999px;overflow:hidden;margin-top:9px}
+.bar>i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--green));transition:.25s}
 .clock-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:12px}
-.clock{background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:11px 12px}.clock-label{font-size:10px;color:var(--sub);letter-spacing:.08em}.clock-value{font-size:23px;font-weight:900;font-variant-numeric:tabular-nums;margin-top:2px}
-.current{border-color:#6a501d;background:linear-gradient(145deg,#211a0d,var(--card) 65%)}
-.step-tag{display:inline-block;font-size:10px;font-weight:900;letter-spacing:.1em;color:#1e1605;background:var(--amber);border-radius:6px;padding:3px 7px}
-.step-name{font-size:29px;font-weight:950;letter-spacing:-.03em;margin-top:9px}.step-detail{font-size:18px;color:var(--cyan);font-weight:850;margin-top:2px}
-.step-note{font-size:12px;color:var(--sub);margin-top:11px;border-left:3px solid var(--orange);padding-left:10px}
+.clock{background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:11px 12px}
+.clock-label{font-size:10px;color:var(--sub);letter-spacing:.08em}
+.clock-value{font-size:24px;font-weight:900;font-variant-numeric:tabular-nums;margin-top:2px}
+.current{
+  border-color:#4b408b;
+  background:linear-gradient(145deg,#18162a,var(--card) 66%);
+}
+.step-tag{
+  display:inline-block;font-size:10px;font-weight:900;letter-spacing:.1em;color:#fff;
+  background:var(--accent);border-radius:6px;padding:3px 7px
+}
+.step-name{font-size:31px;font-weight:950;letter-spacing:-.03em;margin-top:9px}
+.step-detail{font-size:19px;color:var(--accent2);font-weight:850;margin-top:2px}
+.step-note{font-size:12px;color:var(--sub);margin-top:11px;border-left:3px solid var(--accent);padding-left:10px}
 .complete{font-size:16px}
-.rest{border-color:#2a7651;background:linear-gradient(145deg,#10251a,var(--card) 65%);text-align:center}
-.rest-label{font-size:11px;color:var(--green);font-weight:900;letter-spacing:.12em}.rest-time{font-size:66px;line-height:1;font-weight:950;color:var(--green);font-variant-numeric:tabular-nums;margin:10px 0}.rest-next{font-size:14px;color:var(--sub)}
-.row{display:flex;gap:9px}.row button{flex:1}
-.done{text-align:center;border-color:#27784e;background:linear-gradient(145deg,#10291a,var(--card) 68%)}
-.done-mark{font-size:46px}.done-title{font-size:25px;font-weight:950;margin-top:4px}.done-sub{font-size:13px;color:var(--sub);margin-top:5px}
-.history-title{font-size:12px;color:var(--sub);font-weight:850}.history{margin-top:9px;display:grid;gap:7px}.history-row{display:flex;justify-content:space-between;gap:10px;font-size:12px;background:var(--card2);border-radius:9px;padding:9px 10px}.history-row span:last-child{color:var(--cyan);font-weight:800}.empty{font-size:12px;color:var(--dim);margin-top:8px}
-.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom));transform:translate(-50%,15px);background:#edf5f1;color:#13211a;border-radius:999px;padding:10px 16px;font-size:12px;font-weight:850;opacity:0;pointer-events:none;transition:.2s;z-index:20;white-space:nowrap}.toast.show{opacity:1;transform:translate(-50%,0)}
-.small-actions{display:flex;gap:8px;margin-top:10px}.small-actions button{flex:1;border:1px solid var(--line);background:transparent;color:var(--sub);border-radius:10px;padding:10px;font-size:12px;font-weight:750}
-@media(max-width:370px){.step-name{font-size:25px}.rest-time{font-size:56px}.plan-row{align-items:flex-start}.plan-detail{max-width:42%}}
+.rest{
+  border-color:#2a7651;
+  background:linear-gradient(145deg,#10251a,var(--card) 65%);
+  text-align:center;
+}
+.rest-label{font-size:11px;color:var(--green);font-weight:900;letter-spacing:.12em}
+.rest-time{font-size:68px;line-height:1;font-weight:950;color:var(--green);font-variant-numeric:tabular-nums;margin:10px 0}
+.rest-next{font-size:14px;color:var(--sub)}
+.done-card{text-align:center;border-color:#27784e;background:linear-gradient(145deg,#10291a,var(--card) 68%)}
+.done-mark{font-size:46px}
+.done-title{font-size:25px;font-weight:950;margin-top:4px}
+.done-sub{font-size:13px;color:var(--sub);margin-top:5px}
+.small-actions{display:flex;gap:8px;margin-top:10px}
+.small-actions button{
+  flex:1;border:1px solid var(--line);background:transparent;color:var(--sub);
+  border-radius:10px;padding:10px;font-size:12px;font-weight:750
+}
+.video-card{
+  border-color:#3d356e;
+  background:linear-gradient(145deg,#171527,var(--card) 70%);
+  position:sticky;
+  top:18px;
+}
+.video-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:11px}
+.video-kicker{font-size:10px;color:var(--accent2);font-weight:900;letter-spacing:.12em}
+.video-title{font-size:18px;font-weight:900;margin-top:3px}
+.video-time{font-size:11px;color:var(--sub);margin-top:2px}
+.video-open{
+  flex:none;border:1px solid var(--line);background:var(--card2);color:var(--sub);
+  border-radius:9px;padding:7px 9px;font-size:11px;font-weight:750;text-decoration:none
+}
+.video-wrap{overflow:hidden;border:1px solid var(--accent);border-radius:12px;background:#000;aspect-ratio:16/9}
+.video-wrap iframe{width:100%;height:100%;display:block;border:0}
+.video-note{font-size:11px;color:var(--sub);margin-top:9px}
+.history-title{font-size:12px;color:var(--sub);font-weight:850}
+.history{margin-top:9px;display:grid;gap:7px}
+.history-row{
+  display:flex;justify-content:space-between;gap:10px;font-size:12px;
+  background:var(--card2);border-radius:9px;padding:9px 10px
+}
+.history-row span:last-child{color:var(--accent2);font-weight:800}
+.empty{font-size:12px;color:var(--dim);margin-top:8px}
+.toast{
+  position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom));
+  transform:translate(-50%,15px);background:#f2f0ff;color:#1b1731;border-radius:999px;
+  padding:10px 16px;font-size:12px;font-weight:850;opacity:0;pointer-events:none;
+  transition:.2s;z-index:20;white-space:nowrap
+}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+@media(max-width:900px){
+  .wrap{max-width:640px;margin:0 auto;padding-left:16px;padding-right:16px}
+  .page-grid{display:block}
+  .side-col{margin-top:12px}
+  .video-card{position:static}
+  .plan{grid-template-columns:1fr}
+}
+@media(max-width:370px){
+  .step-name{font-size:26px}
+  .rest-time{font-size:56px}
+  .plan-row{align-items:flex-start}
+  .plan-detail{max-width:42%}
+}
 </style>
 </head>
 <body>
 <div class="wrap">
   <header class="top">
-    <div><div class="brand">kedy — guided training</div><h1>Gainz Guided</h1></div>
+    <div>
+      <div class="brand">kedy — home training</div>
+      <h1>Gainz<span>.</span></h1>
+      <div class="mode">GUIDED TRAINING</div>
+    </div>
     <a class="back" href="./">通常画面へ</a>
   </header>
 
-  <section class="start" id="startView">
-    <div class="card hero">
-      <div class="kicker">今日の固定メニュー</div>
-      <div class="hero-title">迷わず4種目だけ</div>
-      <div class="hero-sub">懸垂後の空白をなくす。完了を押すたび、次の種目と75秒休憩を出す。</div>
-      <div class="plan" id="planList"></div>
-      <button class="spotify" id="spotifyStart" type="button">🎧 Spotifyを開く</button>
-      <button class="primary" id="startBtn" type="button">▶ 30分トレーニング開始</button>
-      <div class="small-actions"><button id="spotifyEdit" type="button">Spotifyリンクを設定</button><button id="clearData" type="button">記録をリセット</button></div>
-    </div>
-  </section>
+  <div class="page-grid">
+    <main class="main-col">
+      <section class="start" id="startView">
+        <div class="card hero">
+          <div class="kicker">今日の固定メニュー</div>
+          <div class="hero-title">懸垂から迷わず4種目</div>
+          <div class="hero-sub">懸垂動画を見ながら開始。完了を押すたび、次の種目と75秒休憩を表示する。</div>
+          <div class="plan" id="planList"></div>
+          <button class="spotify" id="spotifyStart" type="button">🎧 Spotifyを開く</button>
+          <button class="primary" id="startBtn" type="button">▶ 30分トレーニング開始</button>
+          <div class="small-actions">
+            <button id="spotifyEdit" type="button">Spotifyリンクを設定</button>
+            <button id="clearData" type="button">記録をリセット</button>
+          </div>
+        </div>
+      </section>
 
-  <section class="session" id="sessionView" hidden>
-    <div class="card">
-      <div class="progress-head"><div class="progress-label">TODAY'S FLOW</div><div class="progress-count" id="progressCount">1 / 4</div></div>
-      <div class="bar"><i id="progressBar"></i></div>
-      <div class="clock-grid">
-        <div class="clock"><div class="clock-label">30分 残り</div><div class="clock-value" id="sessionClock">30:00</div></div>
-        <div class="clock"><div class="clock-label">完了</div><div class="clock-value" id="doneCount">0種目</div></div>
-      </div>
-    </div>
+      <section class="session" id="sessionView" hidden>
+        <div class="card">
+          <div class="progress-head">
+            <div class="progress-label">TODAY'S FLOW</div>
+            <div class="progress-count" id="progressCount">1 / 4</div>
+          </div>
+          <div class="bar"><i id="progressBar"></i></div>
+          <div class="clock-grid">
+            <div class="clock">
+              <div class="clock-label">30分 残り</div>
+              <div class="clock-value" id="sessionClock">30:00</div>
+            </div>
+            <div class="clock">
+              <div class="clock-label">完了</div>
+              <div class="clock-value" id="doneCount">0種目</div>
+            </div>
+          </div>
+        </div>
 
-    <div class="card current" id="currentCard">
-      <span class="step-tag" id="stepTag">STEP 1</span>
-      <div class="step-name" id="stepName">懸垂</div>
-      <div class="step-detail" id="stepDetail">できる回数</div>
-      <div class="step-note" id="stepNote">反動を使わず、肩甲骨から引く。終わったら下を押す。</div>
-      <button class="primary complete" id="completeBtn" type="button">完了して次へ →</button>
-    </div>
+        <div class="card current" id="currentCard">
+          <span class="step-tag" id="stepTag">STEP 1</span>
+          <div class="step-name" id="stepName">懸垂</div>
+          <div class="step-detail" id="stepDetail">できる回数</div>
+          <div class="step-note" id="stepNote">反動を使わず、肩甲骨から引く。終わったら下を押す。</div>
+          <button class="primary complete" id="completeBtn" type="button">完了して次へ →</button>
+        </div>
 
-    <div class="card rest" id="restView" hidden>
-      <div class="rest-label">REST</div>
-      <div class="rest-time" id="restClock">1:15</div>
-      <div class="rest-next" id="restNext">次：ベンチプレス 15kg × 8回</div>
-      <button class="secondary" id="skipRest" type="button">休憩をスキップ</button>
-    </div>
+        <div class="card rest" id="restView" hidden>
+          <div class="rest-label">REST</div>
+          <div class="rest-time" id="restClock">1:15</div>
+          <div class="rest-next" id="restNext">次：ベンチプレス 15kg × 8回</div>
+          <button class="secondary" id="skipRest" type="button">休憩をスキップ</button>
+        </div>
 
-    <button class="spotify" id="spotifySession" type="button">🎧 Spotifyを開く</button>
-    <button class="danger" id="stopBtn" type="button">今日はここで終了</button>
-  </section>
+        <button class="spotify" id="spotifySession" type="button">🎧 Spotifyを開く</button>
+        <button class="danger" id="stopBtn" type="button">今日はここで終了</button>
+      </section>
 
-  <section class="done" id="doneView" hidden>
-    <div class="card done">
-      <div class="done-mark">✓</div><div class="done-title">今日の4種目完了</div>
-      <div class="done-sub" id="doneSummary">30分以内に終了</div>
-      <button class="primary" id="againBtn" type="button">もう一度やる</button>
-      <a class="secondary" href="./" style="display:block;text-decoration:none">通常画面へ戻る</a>
-    </div>
-  </section>
+      <section class="done-view" id="doneView" hidden>
+        <div class="card done-card">
+          <div class="done-mark">✓</div>
+          <div class="done-title">今日の4種目完了</div>
+          <div class="done-sub" id="doneSummary">30分以内に終了</div>
+          <button class="primary" id="againBtn" type="button">もう一度やる</button>
+          <a class="secondary" href="./" style="display:block;text-decoration:none">通常画面へ戻る</a>
+        </div>
+      </section>
+    </main>
 
-  <section class="card">
-    <div class="history-title">最近のガイド記録</div>
-    <div class="history" id="history"></div>
-  </section>
+    <aside class="side-col">
+      <section class="card video-card">
+        <div class="video-head">
+          <div>
+            <div class="video-kicker">PULL-UP VIDEO</div>
+            <div class="video-title">懸垂・背中を一緒にやる</div>
+            <div class="video-time">0:30〜4:03を再生</div>
+          </div>
+          <a class="video-open" href="https://youtu.be/hj2j-RsUiSE?t=30" target="_blank" rel="noopener">YouTubeで開く</a>
+        </div>
+        <div class="video-wrap">
+          <iframe id="pullupVideo"
+            title="懸垂・背中トレーニング動画"
+            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen></iframe>
+        </div>
+        <div class="video-note" id="videoNote">動画を見てから「30分トレーニング開始」を押してもOK。</div>
+      </section>
+
+      <section class="card">
+        <div class="history-title">最近のガイド記録</div>
+        <div class="history" id="history"></div>
+      </section>
+    </aside>
+  </div>
 </div>
+
 <div class="toast" id="toast"></div>
+
 <script>
 const PLAN=[
   {name:"懸垂",detail:"できる回数",note:"反動を使わず、肩甲骨から引く。終わったら下を押す。",rest:75},
@@ -126,6 +300,7 @@ const PLAN=[
   {name:"ベンチ腹筋",detail:"10回 × 2セット",note:"反動を使わず、腹で起きる。1セットごとに休んでOK。",rest:75},
   {name:"プッシュアップバー",detail:"8回",note:"体は一直線。胸をバーの間へ下ろす。",rest:0}
 ];
+const VIDEO_ID="hj2j-RsUiSE";
 const STATE_KEY="gainz.guided.state.v1";
 const HISTORY_KEY="gainz.guided.history.v1";
 const SPOTIFY_KEY="gainz.guided.spotify.v1";
@@ -144,24 +319,56 @@ function saveHistory(rows){localStorage.setItem(HISTORY_KEY,JSON.stringify(rows.
 function spotifyUrl(){return localStorage.getItem(SPOTIFY_KEY)||DEFAULT_SPOTIFY;}
 function fmt(sec){sec=Math.max(0,Math.ceil(sec));return `${Math.floor(sec/60)}:${String(sec%60).padStart(2,"0")}`;}
 function elapsedText(ms){const m=Math.max(1,Math.round(ms/60000));return `${m}分`;}
-function toast(text){const el=$("toast");el.textContent=text;el.classList.add("show");setTimeout(()=>el.classList.remove("show"),1600);}
-function beep(){
-  try{const C=window.AudioContext||window.webkitAudioContext,a=new C(),o=a.createOscillator(),g=a.createGain();o.frequency.value=880;g.gain.setValueAtTime(.08,a.currentTime);g.gain.exponentialRampToValueAtTime(.001,a.currentTime+.25);o.connect(g);g.connect(a.destination);o.start();o.stop(a.currentTime+.25);}catch(e){}
+function toast(text){
+  const el=$("toast");
+  el.textContent=text;
+  el.classList.add("show");
+  setTimeout(()=>el.classList.remove("show"),1600);
 }
-function openSpotify(){window.open(spotifyUrl(),"_blank","noopener");}
+function beep(){
+  try{
+    const C=window.AudioContext||window.webkitAudioContext;
+    const a=new C(),o=a.createOscillator(),g=a.createGain();
+    o.frequency.value=880;
+    g.gain.setValueAtTime(.08,a.currentTime);
+    g.gain.exponentialRampToValueAtTime(.001,a.currentTime+.25);
+    o.connect(g);g.connect(a.destination);o.start();o.stop(a.currentTime+.25);
+  }catch(e){}
+}
+function videoUrl(autoplay){
+  return `https://www.youtube.com/embed/${VIDEO_ID}?start=30&end=243&rel=0&playsinline=1&autoplay=${autoplay?1:0}`;
+}
+function setVideo(autoplay=false){
+  $("pullupVideo").src=videoUrl(autoplay);
+  $("videoNote").textContent=autoplay
+    ?"懸垂動画を再生中。終わったら「完了して次へ」。"
+    :"再生ボタンで懸垂動画を見られる。";
+}
+function openSpotify(){
+  setVideo(false);
+  window.open(spotifyUrl(),"_blank","noopener");
+}
 function setSpotify(){
   const value=prompt("SpotifyのプレイリストURLを貼って",spotifyUrl());
   if(value===null)return;
   const url=value.trim();
-  if(url&&!/^https:\/\/(open\.)?spotify\.com\//i.test(url)){toast("SpotifyのURLを入れて");return;}
-  localStorage.setItem(SPOTIFY_KEY,url||DEFAULT_SPOTIFY);toast("Spotifyリンクを保存 ✓");
+  if(url&&!/^https:\/\/(open\.)?spotify\.com\//i.test(url)){
+    toast("SpotifyのURLを入れて");
+    return;
+  }
+  localStorage.setItem(SPOTIFY_KEY,url||DEFAULT_SPOTIFY);
+  toast("Spotifyリンクを保存 ✓");
 }
 function renderPlan(){
-  $("planList").innerHTML=PLAN.map((x,i)=>`<div class="plan-row"><span class="plan-num">${i+1}</span><span class="plan-text">${x.name}</span><span class="plan-detail">${x.detail}</span></div>`).join("");
+  $("planList").innerHTML=PLAN.map((x,i)=>
+    `<div class="plan-row"><span class="plan-num">${i+1}</span><span class="plan-text">${x.name}</span><span class="plan-detail">${x.detail}</span></div>`
+  ).join("");
 }
 function renderHistory(){
   const rows=history(),el=$("history");
-  el.innerHTML=rows.length?rows.slice(0,5).map(r=>`<div class="history-row"><span>${r.date} ${r.status==="complete"?"完了":"途中終了"}</span><span>${r.completed}/4・${r.duration}</span></div>`).join(""):`<div class="empty">まだ記録なし</div>`;
+  el.innerHTML=rows.length
+    ?rows.slice(0,5).map(r=>`<div class="history-row"><span>${r.date} ${r.status==="complete"?"完了":"途中終了"}</span><span>${r.completed}/4・${r.duration}</span></div>`).join("")
+    :`<div class="empty">まだ記録なし</div>`;
 }
 function show(which){
   $("startView").hidden=which!=="start";
@@ -170,11 +377,21 @@ function show(which){
 }
 function startSession(){
   const now=Date.now();
-  state={active:true,finished:false,step:0,completed:[],startedAt:now,sessionEnd:now+30*60*1000,restEnd:0};
-  saveState();show("session");renderSession();startTick();
+  state={
+    active:true,finished:false,step:0,completed:[],
+    startedAt:now,sessionEnd:now+30*60*1000,restEnd:0
+  };
+  saveState();
+  show("session");
+  renderSession();
+  setVideo(true);
+  startTick();
 }
 function renderSession(){
-  if(!state.active){show(state.finished?"done":"start");return;}
+  if(!state.active){
+    show(state.finished?"done":"start");
+    return;
+  }
   const step=Math.min(state.step,PLAN.length-1),item=PLAN[step];
   $("progressCount").textContent=`${step+1} / ${PLAN.length}`;
   $("progressBar").style.width=`${(state.completed.length/PLAN.length)*100}%`;
@@ -186,55 +403,115 @@ function renderSession(){
   const resting=state.restEnd>Date.now();
   $("currentCard").hidden=resting;
   $("restView").hidden=!resting;
-  if(resting){$("restNext").textContent=`次：${item.name} ${item.detail}`;}
+  if(resting)$("restNext").textContent=`次：${item.name} ${item.detail}`;
   updateClocks();
 }
 function completeStep(){
   if(!state.active||state.restEnd>Date.now())return;
   const index=state.step;
   if(!state.completed.includes(index))state.completed.push(index);
-  if(index>=PLAN.length-1){finish("complete");return;}
+  if(index===0)setVideo(false);
+  if(index>=PLAN.length-1){
+    finish("complete");
+    return;
+  }
   state.step=index+1;
   state.restEnd=Date.now()+PLAN[index].rest*1000;
-  saveState();renderSession();startTick();
+  saveState();
+  renderSession();
+  startTick();
 }
-function skipRest(){state.restEnd=0;saveState();beep();renderSession();toast("次の種目へ");}
+function skipRest(){
+  state.restEnd=0;
+  saveState();
+  beep();
+  renderSession();
+  toast("次の種目へ");
+}
 function updateClocks(){
   if(!state.active)return;
   const remain=(state.sessionEnd-Date.now())/1000;
   $("sessionClock").textContent=remain>0?fmt(remain):"時間超過";
-  if(state.restEnd>Date.now())$("restClock").textContent=fmt((state.restEnd-Date.now())/1000);
-  else if(!$("restView").hidden){state.restEnd=0;saveState();beep();renderSession();toast("休憩おわり ✓");}
+  if(state.restEnd>Date.now()){
+    $("restClock").textContent=fmt((state.restEnd-Date.now())/1000);
+  }else if(!$("restView").hidden){
+    state.restEnd=0;
+    saveState();
+    beep();
+    renderSession();
+    toast("休憩おわり ✓");
+  }
 }
-function startTick(){clearInterval(tickIv);tickIv=setInterval(updateClocks,250);}
+function startTick(){
+  clearInterval(tickIv);
+  tickIv=setInterval(updateClocks,250);
+}
 function finish(status){
   clearInterval(tickIv);
+  setVideo(false);
   const now=Date.now(),completed=state.completed.length;
   const rows=history();
-  rows.unshift({date:new Date(now).toLocaleDateString("ja-JP",{month:"numeric",day:"numeric"}),status,completed,duration:elapsedText(now-state.startedAt),time:now});
+  rows.unshift({
+    date:new Date(now).toLocaleDateString("ja-JP",{month:"numeric",day:"numeric"}),
+    status,completed,duration:elapsedText(now-state.startedAt),time:now
+  });
   saveHistory(rows);
-  state={active:false,finished:status==="complete",lastDuration:elapsedText(now-(state.startedAt||now))};
-  saveState();renderHistory();
-  if(status==="complete"){$("doneSummary").textContent=`${state.lastDuration}で終了・記録保存済み`;show("done");beep();}
-  else{show("start");toast(`${completed}/4種目を保存`);}
+  state={
+    active:false,
+    finished:status==="complete",
+    lastDuration:elapsedText(now-(state.startedAt||now))
+  };
+  saveState();
+  renderHistory();
+  if(status==="complete"){
+    $("doneSummary").textContent=`${state.lastDuration}で終了・記録保存済み`;
+    show("done");
+    beep();
+  }else{
+    show("start");
+    toast(`${completed}/4種目を保存`);
+  }
 }
 function resumeOrStart(){
-  if(state.active){show("session");renderSession();startTick();}
-  else if(state.finished){show("done");$("doneSummary").textContent=`${state.lastDuration||"完了"}・記録保存済み`;}
-  else show("start");
+  if(state.active){
+    show("session");
+    renderSession();
+    setVideo(false);
+    startTick();
+  }else if(state.finished){
+    show("done");
+    $("doneSummary").textContent=`${state.lastDuration||"完了"}・記録保存済み`;
+    setVideo(false);
+  }else{
+    show("start");
+    setVideo(false);
+  }
 }
 
 $("startBtn").addEventListener("click",startSession);
 $("completeBtn").addEventListener("click",completeStep);
 $("skipRest").addEventListener("click",skipRest);
-$("stopBtn").addEventListener("click",()=>{if(confirm("途中までの記録を保存して終了する？"))finish("partial");});
+$("stopBtn").addEventListener("click",()=>{
+  if(confirm("途中までの記録を保存して終了する？"))finish("partial");
+});
 $("againBtn").addEventListener("click",startSession);
 $("spotifyStart").addEventListener("click",openSpotify);
 $("spotifySession").addEventListener("click",openSpotify);
 $("spotifyEdit").addEventListener("click",setSpotify);
-$("clearData").addEventListener("click",()=>{if(!confirm("ガイドの進行と履歴を全部消す？"))return;localStorage.removeItem(STATE_KEY);localStorage.removeItem(HISTORY_KEY);state={active:false,finished:false};renderHistory();show("start");toast("記録をリセット");});
+$("clearData").addEventListener("click",()=>{
+  if(!confirm("ガイドの進行と履歴を全部消す？"))return;
+  localStorage.removeItem(STATE_KEY);
+  localStorage.removeItem(HISTORY_KEY);
+  state={active:false,finished:false};
+  renderHistory();
+  show("start");
+  setVideo(false);
+  toast("記録をリセット");
+});
 
-renderPlan();renderHistory();resumeOrStart();
+renderPlan();
+renderHistory();
+resumeOrStart();
 </script>
 </body>
 </html>
