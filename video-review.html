@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b1115">
+<title>Gainz Video Review</title>
+<style>
+:root{--bg:#0b1115;--card:#121b20;--card2:#18242a;--line:#314047;--text:#f6f8f9;--sub:#a8b5bb;--dim:#718188;--orange:#ff9d3d;--cyan:#35c9d0;--green:#4ed28a;--amber:#f3c34c;--danger:#ff7068}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue","Yu Gothic",sans-serif;line-height:1.5}
+button,input{font:inherit}button{cursor:pointer}.wrap{max-width:980px;margin:0 auto;padding:24px 16px 110px}.top{display:flex;justify-content:space-between;gap:16px;align-items:flex-start}.brand{font-size:11px;letter-spacing:.22em;color:var(--sub);text-transform:uppercase}.h1{font-size:30px;font-weight:900;margin-top:4px}.h1 span{color:var(--orange)}.sub{font-size:13px;color:var(--sub);margin-top:8px;max-width:720px}.back{border:1px solid var(--line);background:var(--card);color:var(--sub);border-radius:10px;padding:9px 12px;text-decoration:none;font-size:12px;font-weight:800;white-space:nowrap}.summary{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:18px 0}.sum{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px}.sum b{display:block;font-size:21px}.sum span{font-size:10px;color:var(--sub);letter-spacing:.08em}.filters{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 22px}.filter{border:1px solid var(--line);background:var(--card);color:var(--sub);padding:9px 12px;border-radius:999px;font-size:12px;font-weight:800}.filter.on{background:var(--cyan);border-color:var(--cyan);color:#052326}.section{margin-top:28px}.section-title{display:flex;align-items:center;gap:9px;font-size:19px;font-weight:900}.dot{width:11px;height:11px;border-radius:50%}.chest .dot{background:var(--orange)}.abs .dot{background:var(--cyan)}.backsec .dot{background:var(--green)}.arms .dot{background:var(--amber)}.section-note{font-size:11px;color:var(--sub);margin-top:3px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px}.video{background:var(--card);border:1px solid var(--line);border-radius:15px;padding:14px;min-width:0}.video.current{box-shadow:inset 3px 0 0 var(--cyan)}.head{display:flex;gap:10px;justify-content:space-between}.title{font-size:15px;font-weight:900;line-height:1.35}.badges{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px}.badge{font-size:9px;font-weight:900;letter-spacing:.05em;border-radius:5px;padding:3px 6px;background:var(--card2);color:var(--sub)}.badge.follow{background:#17352f;color:#74e3ae}.badge.form{background:#3a2b16;color:#ffd178}.badge.now{background:#12353a;color:#65e6ec}.open{flex:none;border:1px solid var(--line);background:var(--card2);color:var(--text);border-radius:9px;padding:8px 10px;font-size:11px;font-weight:850}.player{display:none;margin-top:11px;aspect-ratio:16/9;border-radius:11px;overflow:hidden;background:#000;border:1px solid var(--line)}.player iframe{width:100%;height:100%;border:0;display:block}.choices{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:12px}.choice{border:1px solid var(--line);background:var(--card2);color:var(--sub);border-radius:9px;padding:9px 5px;font-size:11px;font-weight:850}.choice.keep.on{background:#12372a;border-color:var(--green);color:#86ecb6}.choice.remove.on{background:#3a1d1d;border-color:var(--danger);color:#ff9c97}.choice.replace.on{background:#3c3016;border-color:var(--amber);color:#ffda79}.replace-box{display:none;margin-top:8px}.replace-box.show{display:block}.replace-box input{width:100%;border:1px solid var(--line);background:#0e161a;color:var(--text);border-radius:9px;padding:10px;font-size:12px}.memo{width:100%;border:1px solid transparent;background:transparent;color:var(--sub);padding:8px 2px 2px;margin-top:4px;font-size:11px;outline:none}.memo:focus{border-bottom-color:var(--line)}.sticky{position:fixed;left:0;right:0;bottom:0;background:rgba(11,17,21,.94);backdrop-filter:blur(12px);border-top:1px solid var(--line);padding:11px 16px calc(11px + env(safe-area-inset-bottom));z-index:5}.sticky-in{max-width:980px;margin:0 auto;display:flex;gap:8px}.copy{flex:1;border:0;border-radius:11px;background:var(--orange);color:#251506;padding:13px;font-weight:900}.clear{border:1px solid var(--line);border-radius:11px;background:var(--card);color:var(--sub);padding:13px 15px;font-weight:800}.toast{position:fixed;left:50%;bottom:86px;transform:translate(-50%,10px);background:#f2f6f7;color:#102025;border-radius:999px;padding:9px 15px;font-size:12px;font-weight:850;opacity:0;pointer-events:none;transition:.2s;z-index:9}.toast.show{opacity:1;transform:translate(-50%,0)}
+@media(max-width:720px){.grid{grid-template-columns:1fr}.summary{grid-template-columns:repeat(2,1fr)}.h1{font-size:27px}.wrap{padding-top:18px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="top"><div><div class="brand">kedy — Gainz setup</div><div class="h1">Video Review<span>.</span></div><div class="sub">GitHub内の筋トレ動画を重複除去して部位別に集約。動画を見て「残す／消す／差し替え」を選ぶ。判定はこの端末へ自動保存される。</div></div><a class="back" href="./">Gainzへ戻る</a></header>
+<div class="summary"><div class="sum"><b id="total">24</b><span>全動画</span></div><div class="sum"><b id="done">0</b><span>判定済み</span></div><div class="sum"><b id="keep">0</b><span>残す</span></div><div class="sum"><b id="left">24</b><span>未判定</span></div></div>
+<div class="filters"><button class="filter on" data-filter="all">全部</button><button class="filter" data-filter="follow">一緒にやる候補</button><button class="filter" data-filter="form">フォーム確認</button><button class="filter" data-filter="undecided">未判定だけ</button></div>
+<div id="sections"></div>
+</div>
+<div class="sticky"><div class="sticky-in"><button class="copy" id="copy">判定結果をコピー</button><button class="clear" id="clear">リセット</button></div></div><div class="toast" id="toast"></div>
+<script>
+const GROUPS=[
+ {key:'chest',cls:'chest',label:'胸',note:'胸を主目的にする動画',videos:[
+  {id:'ZI7URsS6VrA',title:'胸 2分｜プッシュアップバー',type:'follow',sources:['現行上部','通常版','Guided']},
+  {id:'gOW7hO7TQRg',title:'プッシュアップバー腕立て',type:'form',sources:['通常版・種目']},
+  {id:'pctyhH_HYxc',title:'ダンベルベンチプレス',type:'form',sources:['通常版・種目','Guided']},
+  {id:'ls-cMaddd-4',title:'ダンベルフライ',type:'form',sources:['通常版・追加']},
+  {id:'4NtPyLcvigw',title:'ディップス',type:'form',sources:['通常版・追加']},
+  {id:'JgkRrdUqM2c',title:'胸ドアストレッチ',type:'form',sources:['軽め・回復']}
+ ]},
+ {key:'abs',cls:'abs',label:'腹筋',note:'腹直筋・下腹・脇腹',videos:[
+  {id:'C9xfentB4QA',title:'レッグレイズ｜下腹',type:'follow',sources:['現行開始','現行上部','通常版']},
+  {id:'R4vb8poJnv0',title:'腹筋 2分｜短時間メニュー',type:'follow',sources:['現行上部','通常版','Guided']},
+  {id:'yfF-Q2NhVnE',title:'腹筋 6分｜シックスパック',type:'follow',sources:['現行上部','通常版','Guided']},
+  {id:'fLbAZW0pZfo',title:'腹筋ローラー｜初心者向け',type:'form',sources:['通常版・種目']},
+  {id:'7bVKRM8GkdI',title:'ハンギングニーレイズ',type:'form',sources:['通常版・追加']},
+  {id:'FVQ8KN2g-ig',title:'ロシアンツイスト',type:'follow',sources:['通常版・種目','軽め']}
+ ]},
+ {key:'back',cls:'backsec',label:'背中',note:'広背筋・姿勢・僧帽筋',videos:[
+  {id:'hj2j-RsUiSE',title:'背中 自重3分／懸垂伴走',type:'follow',sources:['通常版','Guided']},
+  {id:'Q-LGg-58_ZU',title:'背筋 6分｜器具なし',type:'follow',sources:['通常版・動画','Guided']},
+  {id:'leTIONGcVjs',title:'懸垂フォーム',type:'form',sources:['通常版・種目']},
+  {id:'71NcdOwfMv8',title:'ワンハンドダンベルロウ',type:'form',sources:['通常版・種目','Guided']},
+  {id:'ygxQifjl2pQ',title:'ダンベルプルオーバー',type:'form',sources:['通常版・種目']},
+  {id:'43VhXUG8J-8',title:'斜め懸垂｜インバーテッドロウ',type:'form',sources:['通常版・追加']},
+  {id:'nlouGqRR-G8',title:'シュラッグ｜僧帽筋',type:'form',sources:['通常版・種目']}
+ ]},
+ {key:'arms',cls:'arms',label:'肩・腕',note:'筋肉痛がない日の追加候補',videos:[
+  {id:'tp9RRXCvnko',title:'ダンベルショルダープレス',type:'form',sources:['通常版・種目','Guided']},
+  {id:'u6vxzIuOPYg',title:'ダンベルリアレイズ｜肩後ろ',type:'form',sources:['通常版・種目']},
+  {id:'z4WI-XdAJBk',title:'トライセプスエクステンション',type:'form',sources:['通常版・種目']},
+  {id:'7sQ5izf39Gs',title:'ダンベルカール',type:'form',sources:['通常版・種目']},
+  {id:'R9gZHq9o5b4',title:'ハンマーカール',type:'form',sources:['通常版・種目']}
+ ]}
+];
+const STORE='gainz_video_review_v1';let state=JSON.parse(localStorage.getItem(STORE)||'{}');let filter='all';
+const $=id=>document.getElementById(id);const all=GROUPS.flatMap(g=>g.videos.map(v=>({...v,group:g.label,key:g.key+'_'+v.id})));
+function save(){localStorage.setItem(STORE,JSON.stringify(state));stats()}
+function render(){const root=$('sections');root.innerHTML='';GROUPS.forEach(g=>{const sec=document.createElement('section');sec.className='section '+g.cls;sec.innerHTML=`<div class="section-title"><i class="dot"></i>${g.label}<span style="font-size:11px;color:var(--sub)">${g.videos.length}本</span></div><div class="section-note">${g.note}</div><div class="grid"></div>`;const grid=sec.querySelector('.grid');g.videos.forEach(v=>{const key=g.key+'_'+v.id,s=state[key]||{};const card=document.createElement('article');card.className='video '+(v.sources.some(x=>x.includes('現行'))?'current ':'')+v.type;card.dataset.key=key;card.dataset.type=v.type;card.innerHTML=`<div class="head"><div><div class="title">${v.title}</div><div class="badges"><span class="badge ${v.type}">${v.type==='follow'?'一緒にやる':'フォーム確認'}</span>${v.sources.map(x=>`<span class="badge ${x.includes('現行')?'now':''}">${x}</span>`).join('')}</div></div><button class="open">▶ 見る</button></div><div class="player"></div><div class="choices"><button class="choice keep ${s.decision==='keep'?'on':''}" data-d="keep">残す</button><button class="choice remove ${s.decision==='remove'?'on':''}" data-d="remove">消す</button><button class="choice replace ${s.decision==='replace'?'on':''}" data-d="replace">差し替え</button></div><div class="replace-box ${s.decision==='replace'?'show':''}"><input value="${esc(s.url||'')}" placeholder="新しいYouTube URL"></div><input class="memo" value="${esc(s.memo||'')}" placeholder="メモ（任意）">`;
+ card.querySelector('.open').onclick=()=>{const p=card.querySelector('.player');if(p.innerHTML){p.innerHTML='';p.style.display='none'}else{p.innerHTML=`<iframe src="https://www.youtube.com/embed/${v.id}?rel=0&playsinline=1" title="${v.title}" allow="accelerometer;autoplay;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe>`;p.style.display='block'}};
+ card.querySelectorAll('.choice').forEach(b=>b.onclick=()=>{state[key]={...(state[key]||{}),decision:b.dataset.d};save();render()});
+ card.querySelector('.replace-box input').oninput=e=>{state[key]={...(state[key]||{}),url:e.target.value};save()};card.querySelector('.memo').oninput=e=>{state[key]={...(state[key]||{}),memo:e.target.value};save()};grid.appendChild(card)});root.appendChild(sec)});applyFilter();stats()}
+function esc(s){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+function applyFilter(){document.querySelectorAll('.video').forEach(c=>{const s=state[c.dataset.key]||{};c.style.display=(filter==='all'||filter===c.dataset.type||(filter==='undecided'&&!s.decision))?'block':'none'});document.querySelectorAll('.section').forEach(s=>{s.style.display=[...s.querySelectorAll('.video')].some(v=>v.style.display!=='none')?'block':'none'})}
+function stats(){const vals=all.map(v=>state[v.key]?.decision).filter(Boolean);$('done').textContent=vals.length;$('keep').textContent=vals.filter(x=>x==='keep').length;$('left').textContent=all.length-vals.length}
+document.querySelectorAll('.filter').forEach(b=>b.onclick=()=>{document.querySelectorAll('.filter').forEach(x=>x.classList.remove('on'));b.classList.add('on');filter=b.dataset.filter;applyFilter()});
+$('copy').onclick=async()=>{const lines=['【Gainz 動画レビュー結果】'];GROUPS.forEach(g=>{lines.push(`\n■ ${g.label}`);g.videos.forEach(v=>{const s=state[g.key+'_'+v.id]||{};const d=s.decision==='keep'?'残す':s.decision==='remove'?'消す':s.decision==='replace'?'差し替え':'未判定';lines.push(`- ${v.title}｜${d}${s.url?`｜新URL: ${s.url}`:''}${s.memo?`｜メモ: ${s.memo}`:''}`)})});await navigator.clipboard.writeText(lines.join('\n'));toast('結果をコピーした')};
+$('clear').onclick=()=>{if(confirm('動画レビューの判定を全部リセットする？')){state={};save();render()}};function toast(t){const x=$('toast');x.textContent=t;x.classList.add('show');setTimeout(()=>x.classList.remove('show'),1800)}render();
+</script>
+</body>
+</html>
