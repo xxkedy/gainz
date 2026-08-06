@@ -5,120 +5,29 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0a0a0c">
 <title>Gainz</title>
-<style>
-html,body{margin:0;min-height:100%;background:#0a0a0c;color:#fafafa;font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue","Yu Gothic",sans-serif}
-#boot{min-height:100dvh;display:grid;place-items:center;font-size:13px;color:#a2a2ad}
-</style>
+<style>html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#0a0a0c}
+#gainzFrame{display:block;width:100%;height:100dvh;border:0;background:#0a0a0c}
+#boot{position:fixed;inset:0;display:grid;place-items:center;background:#0a0a0c;color:#a2a2ad;font:13px -apple-system,BlinkMacSystemFont,"Helvetica Neue","Yu Gothic",sans-serif}</style>
 </head>
 <body>
-<div id="boot">Gainzを準備中…</div>
-<script>
-(async()=>{
-  const res=await fetch('./legacy.html?v=16',{cache:'no-store'});
-  if(!res.ok)throw new Error('legacy load failed');
-  let html=await res.text();
-  const patch=String.raw`
-<style>
-  .priority-note{margin:8px 2px 0;color:#a2a2ad;font-size:11.5px;line-height:1.55}
-  .lower-zone-title{margin-top:30px!important;color:#62626d!important}
-  #secTtl{margin-top:18px}
-  #vidSec{margin-top:22px}
-  .quick-sub b{color:#fafafa}
-  .ex .badge.today-main{background:#ffc234;color:#241f0d}
-</style>
-<script>
-(()=>{
-  const q=s=>document.querySelector(s);
-  const clone=x=>x?{...x}:null;
-  const old=[...W.push.ex,...W.push.opt];
-  const find=n=>old.find(x=>x.n===n);
-
-  const leg={...find("レッグレイズ"),s:"動画1本 または 10〜15回 × 2セット",f:"https://youtu.be/C9xfentB4QA"};
-  const bench={...find("ダンベルベンチプレス"),s:"18kg × 8回 × 2セット",w:18,timer:true,f:""};
-  const kneeBase=find("ハンギングニーレイズ")||{};
-  const knee={...kneeBase,n:"サポート・ニーレイズ",m:"腹",mc:"abs",s:"腰バーで体を浮かせて 10回 × 2セット",tag:"腰バー",tagType:"bar",timer:true,f:"",c:"肩をすくめず、反動なし。脚は上げられる高さまででOK"};
-  const push={...find("プッシュアップバー腕立て"),s:"10回 × 2セット",timer:true,f:"https://youtu.be/ZI7URsS6VrA"};
-  W.push.goal=4;
-  W.push.ex=[leg,bench,knee,push];
-  W.push.opt=[
-    clone(find("腹筋ローラー")),
-    clone(find("ダンベルショルダープレス")),
-    clone(find("トライセプスエクステンション")),
-    clone(find("ダンベルフライ")),
-    clone(find("ディップス"))
-  ].filter(Boolean).map(x=>({...x,tag:x.tag||"追加"}));
-  W.push.vid=[
-    {n:"レッグレイズ｜下腹を一緒にやる",u:"https://youtu.be/C9xfentB4QA"},
-    {n:"胸 2分｜プッシュアップバー",u:"https://youtu.be/ZI7URsS6VrA"},
-    {n:"腹筋 6分｜シックスパック",u:"https://youtu.be/yfF-Q2NhVnE",want:1},
-    {n:"腹筋 2分｜短時間メニュー",u:"https://youtu.be/R4vb8poJnv0"}
-  ];
-  CUE["サポート・ニーレイズ"]=[
-    "腰バーを強く押して肩を下げる",
-    "体を揺らさず膝を腹へ引き上げる",
-    "10回きつければ回数を減らして2セット"
-  ];
-  FOLLOW.add("プッシュアップバー腕立て");
-
-  const originalRender=render;
-  render=function(){
-    q(".priority-note")?.remove();
-    originalRender();
-    if(day==="push"){
-      q("#secTtl").innerHTML='💪 今日の30分メニュー — <b style="color:var(--text)">この4種目で終了</b>';
-      const note=document.createElement("div");
-      note.className="priority-note";
-      note.textContent="30分は上限。4種目が終わったら、22分でもそのまま終了でOK。";
-      q("#secTtl").after(note);
-      q("#list").querySelectorAll(".ex:not(.opt) .name").forEach(n=>n.insertAdjacentHTML("beforeend",'<span class="badge today-main">今日</span>'));
-    }
-  };
-
-  sessionVideoHtml=function(autoplay){
-    return '<iframe src="https://www.youtube.com/embed/C9xfentB4QA?rel=0&playsinline=1&autoplay='+(autoplay?1:0)+'" title="レッグレイズ動画" allow="accelerometer;autoplay;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe>';
-  };
-  q("#quickTitle").textContent="今日の4種目を30分以内で";
-  q(".quick-sub").innerHTML="タイマー開始 → レッグレイズ動画 → 下の4種目へ。<b>全部終われば残り時間があっても終了でOK。</b>";
-  q("#sessionNote").textContent="動画後は、すぐ下の今日のメニューへ。";
-
-  const quick=q(".quick"), sec=q("#secTtl"), list=q("#list"), vidSec=q("#vidSec"), videos=q("#videos");
-  const tabs=q(".tabs"), meta=q(".meta"), cal=q(".cal");
-  quick.after(sec,list,vidSec,videos);
-  const lower=document.createElement("div");
-  lower.className="sec lower-zone-title";
-  lower.textContent="📅 メニュー切替・カレンダー（必要な時だけ）";
-  videos.after(lower,tabs,meta,cal);
-  document.querySelectorAll(".tab").forEach(t=>t.addEventListener("click",()=>setTimeout(()=>q("#secTtl").scrollIntoView({behavior:"smooth",block:"start"}),0)));
-
-  if(!S.get("k.v16migrated")){
-    const ds=DAYS(),td=today(),oldc=ds[td]&&ds[td].push;
-    if(oldc){
-      ds[td].push={
-        e0:!!oldc.e1,
-        e1:!!oldc.e3,
-        e2:!!oldc.o2,
-        e3:!!oldc.e0,
-        o0:!!oldc.e2,
-        o1:!!oldc.e4,
-        o2:!!oldc.e5,
-        o3:!!oldc.o0,
-        o4:!!oldc.o1
-      };
-      sj("k.days",ds);
-    }
-    S.set("k.v16migrated","1");
+<div id="boot">Gainz v16を準備中…</div>
+<iframe id="gainzFrame" src="./legacy.html?v=16" title="Gainz"></iframe>
+<script>const frame=document.getElementById("gainzFrame");
+frame.addEventListener("load",()=>{
+  const d=frame.contentDocument;
+  const boot=document.getElementById("boot");
+  try{
+    const st=d.createElement("style");
+    st.textContent=".lower-zone-title{margin-top:32px!important;color:var(--dim)!important}\n#secTtl{margin-top:18px}\n#vidSec{margin-top:22px}\n.quick-sub{max-width:760px}\n.ex .badge.today-main{background:var(--amber);color:#241f0d}";
+    d.head.appendChild(st);
+    const sc=d.createElement("script");
+    sc.textContent="(()=>{\n  const q=s=>document.querySelector(s);\n  const all=[...W.push.ex,...W.push.opt];\n  const get=n=>all.find(x=>x.n===n);\n\n  const leg={...get(\"レッグレイズ\"),\n    s:\"動画1本 または 10〜15回 × 2セット\",\n    f:\"https://youtu.be/C9xfentB4QA\"\n  };\n  const bench={...get(\"ダンベルベンチプレス\"),\n    s:\"18kg × 8回 × 2セット\",w:18,timer:true,f:\"\"\n  };\n  const kneeBase=get(\"ハンギングニーレイズ\")||{};\n  const knee={...kneeBase,\n    n:\"サポート・ニーレイズ\",m:\"腹\",mc:\"abs\",\n    s:\"腰バーで体を浮かせて 10回 × 2セット\",\n    tag:\"腰バー\",tagType:\"bar\",timer:true,f:\"\",\n    c:\"肩をすくめず、反動なし。脚は上げられる高さまででOK\"\n  };\n  const push={...get(\"プッシュアップバー腕立て\"),\n    s:\"10回 × 2セット\",timer:true,f:\"\"\n  };\n\n  W.push.goal=4;\n  W.push.ex=[leg,bench,knee,push];\n  W.push.opt=[\n    get(\"腹筋ローラー\"),\n    get(\"ダンベルショルダープレス\"),\n    get(\"トライセプスエクステンション\"),\n    get(\"ダンベルフライ\"),\n    get(\"ディップス\")\n  ].filter(Boolean).map(x=>({...x,tag:x.tag||\"追加\"}));\n  W.push.vid=[\n    {n:\"レッグレイズ｜下腹を一緒にやる\",u:\"https://youtu.be/C9xfentB4QA\"},\n    {n:\"胸 2分｜プッシュアップバー\",u:\"https://youtu.be/ZI7URsS6VrA\"},\n    {n:\"腹筋 6分｜シックスパック\",u:\"https://youtu.be/yfF-Q2NhVnE\",want:1},\n    {n:\"腹筋 2分｜短時間メニュー\",u:\"https://youtu.be/R4vb8poJnv0\"}\n  ];\n  CUE[\"サポート・ニーレイズ\"]=[\n    \"腰バーを強く押して肩を下げる\",\n    \"体を揺らさず膝を腹へ引き上げる\",\n    \"10回きつければ回数を減らして2セット\"\n  ];\n\n  sessionVideoHtml=function(autoplay){\n    return '<iframe src=\"https://www.youtube.com/embed/C9xfentB4QA?rel=0&playsinline=1&autoplay='+\n      (autoplay?1:0)+'\" title=\"レッグレイズ動画\" allow=\"accelerometer;autoplay;encrypted-media;gyroscope;picture-in-picture\" allowfullscreen></iframe>';\n  };\n\n  q(\"#quickTitle\").textContent=\"腹筋から30分\";\n  q(\".quick-sub\").textContent=\"レッグレイズ動画から開始。今日の4種目が終わったら、30分未満でも終了してOK。\";\n  q(\"#sessionNote\").textContent=\"動画後は下の今日の4種目へ。全部終わればタイマー途中でも終了してOK。\";\n\n  day=\"push\";\n  render();\n  renderCal();\n\n  const quick=q(\".quick\");\n  const sec=q(\"#secTtl\");\n  const list=q(\"#list\");\n  const vidSec=q(\"#vidSec\");\n  const videos=q(\"#videos\");\n  const tabs=q(\".tabs\");\n  const meta=q(\".meta\");\n  const cal=q(\".cal\");\n  const lower=document.createElement(\"div\");\n  lower.className=\"sec lower-zone-title\";\n  lower.textContent=\"📊 履歴・別メニュー — 必要な時だけ見る\";\n\n  quick.after(sec);\n  sec.after(list);\n  list.after(vidSec);\n  vidSec.after(videos);\n  videos.after(lower);\n  lower.after(tabs);\n  tabs.after(meta);\n  meta.after(cal);\n\n  sec.innerHTML='💪 今日の4種目 — <b style=\"color:var(--text)\">上から順に、できるセット数でOK</b>';\n  vidSec.textContent=\"🎬 一緒にやる動画 — 今やりたい動画をすぐ選ぶ\";\n  const ver=q(\".ver\");\n  if(ver)ver.textContent=\"Gainz v16 · 2026.08.06\";\n})();";
+    d.body.appendChild(sc);
+    boot.remove();
+  }catch(e){
+    boot.textContent="Gainzの更新読み込みに失敗。Ctrl＋F5でもう一度更新して。";
+    console.error(e);
   }
-  q("#sessionStart").addEventListener("click",()=>setTimeout(()=>{q("#sessionNote").textContent="動画後は、すぐ下の今日のメニューへ。";},0));
-  day="push";
-  render();
-  const ver=q(".ver");if(ver)ver.textContent="Gainz v16 · 2026.08.06";
-})();
-<\/script>`;
-  html=html.replace('</body>',patch+'\n</body>');
-  document.open();
-  document.write(html);
-  document.close();
-})().catch(()=>location.replace('./legacy.html'));
-</script>
+});</script>
 </body>
 </html>
