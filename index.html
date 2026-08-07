@@ -5,29 +5,247 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0a0a0c">
 <title>Gainz</title>
-<style>html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#0a0a0c}
+<style>
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#0a0a0c}
 #gainzFrame{display:block;width:100%;height:100dvh;border:0;background:#0a0a0c}
-#boot{position:fixed;inset:0;display:grid;place-items:center;background:#0a0a0c;color:#a2a2ad;font:13px -apple-system,BlinkMacSystemFont,"Helvetica Neue","Yu Gothic",sans-serif}</style>
+#boot{position:fixed;inset:0;display:grid;place-items:center;background:#0a0a0c;color:#a2a2ad;font:13px -apple-system,BlinkMacSystemFont,"Helvetica Neue","Yu Gothic",sans-serif}
+</style>
 </head>
 <body>
-<div id="boot">Gainz v16を準備中…</div>
-<iframe id="gainzFrame" src="./legacy.html?v=16" title="Gainz"></iframe>
-<script>const frame=document.getElementById("gainzFrame");
+<div id="boot">Gainz v17を準備中…</div>
+<iframe id="gainzFrame" src="./legacy.html?v=17" title="Gainz"></iframe>
+
+<script id="patchCss" type="text/plain">
+.lower-zone-title{margin-top:32px!important;color:var(--dim)!important}
+#secTtl{margin-top:18px}
+#vidSec{margin-top:22px}
+.quick-sub{max-width:760px}
+.ex .badge.today-main{background:var(--amber);color:#241f0d}
+.today-picker{margin:18px 0 12px;padding:16px;background:var(--card);border:1px solid var(--line);border-radius:16px}
+.today-picker-kicker{font-size:10px;font-weight:800;letter-spacing:.15em;color:#2dd4bf;text-transform:uppercase}
+.today-picker-title{font-size:18px;font-weight:800;margin-top:4px}
+.today-picker-sub{font-size:12px;color:var(--sub);line-height:1.55;margin-top:5px}
+.today-chips{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:13px}
+.today-chip{border:1.5px solid var(--line);background:var(--card2);color:var(--sub);border-radius:12px;padding:12px 10px;font:700 13px inherit;cursor:pointer;text-align:left}
+.today-chip[aria-pressed="true"]{border-color:#2dd4bf;background:#0d2a27;color:#2dd4bf}
+.today-chip small{display:block;font-size:10px;font-weight:600;color:var(--dim);margin-top:2px}
+.today-chip[aria-pressed="true"] small{color:#83e9dc}
+.today-picker-note{font-size:10.5px;color:var(--dim);margin-top:10px}
+@media(max-width:420px){.today-chips{grid-template-columns:1fr}}
+</script>
+
+<script id="patchSource" type="text/plain">
+(()=>{
+  const q=s=>document.querySelector(s);
+  const clone=x=>JSON.parse(JSON.stringify(x));
+  const compact=u=>String(u||"").trim();
+
+  function items(){
+    return ["push","pull","light"].flatMap(k=>[...(W[k].ex||[]),...(W[k].opt||[])]);
+  }
+  function byName(name){
+    return items().find(x=>x.n===name);
+  }
+  function setUrl(name,url){
+    const x=byName(name);if(x)x.f=url;
+  }
+  function removeByName(name){
+    ["push","pull","light"].forEach(k=>{
+      W[k].ex=(W[k].ex||[]).filter(x=>x.n!==name);
+      W[k].opt=(W[k].opt||[]).filter(x=>x.n!==name);
+    });
+  }
+
+  setUrl("ダンベルベンチプレス","https://youtube.com/shorts/N4dCNxgtJ-s");
+  setUrl("ディップス","https://youtube.com/shorts/9I-qZXJ2r14");
+  setUrl("ワンハンドダンベルロウ","https://youtube.com/shorts/0LY1bGPPsRk");
+  setUrl("ダンベルプルオーバー","https://youtube.com/shorts/bdrveQwk9-s");
+  removeByName("胸ドアストレッチ");
+  removeByName("斜め懸垂（インバーテッドロウ）");
+  removeByName("ハンマーカール");
+
+  const pick=name=>{const x=byName(name);return x?clone(x):null;};
+  const leg={...pick("レッグレイズ"),s:"動画1本 または 10〜15回 × 2セット",f:"https://youtu.be/C9xfentB4QA"};
+  const bench={...pick("ダンベルベンチプレス"),s:"18kg × 8回 × 2セット",w:18,timer:true};
+  const kneeBase=pick("ハンギングニーレイズ")||{};
+  const knee={...kneeBase,n:"サポート・ニーレイズ",m:"腹",mc:"abs",s:"腰バーで体を浮かせて 10回 × 2セット",tag:"腰バー",tagType:"bar",timer:true,c:"肩をすくめず、反動なし。脚は上げられる高さまででOK"};
+  const push={...pick("プッシュアップバー腕立て"),s:"10回 × 2セット",timer:true};
+  W.push.goal=4;
+  W.push.ex=[leg,bench,knee,push].filter(Boolean);
+  W.push.opt=[pick("腹筋ローラー"),pick("ダンベルショルダープレス"),pick("トライセプスエクステンション"),pick("ダンベルフライ"),pick("ディップス")].filter(Boolean).map(x=>({...x,tag:x.tag||"追加"}));
+  CUE["サポート・ニーレイズ"]=["腰バーを強く押して肩を下げる","体を揺らさず膝を腹へ引き上げる","10回きつければ回数を減らして2セット"];
+
+  const followNames=[
+    "腹筋ローラー","ハンギングニーレイズ","サポート・ニーレイズ","シュラッグ",
+    "ダンベルショルダープレス","トライセプスエクステンション","ダンベルカール"
+  ];
+  followNames.forEach(n=>FOLLOW.add(n));
+
+  W.push.vid=[
+    {n:"胸 2分｜プッシュアップバー｜0:30〜3:00",u:"https://youtu.be/ZI7URsS6VrA?start=30&end=180"},
+    {n:"腹筋 2分｜アブローラー｜1:40〜4:00",u:"https://youtu.be/R4vb8poJnv0?start=100&end=240"},
+    {n:"腹筋 6分｜シックスパック",u:"https://youtu.be/yfF-Q2NhVnE",want:1}
+  ];
+
+  function parseYT(raw){
+    try{
+      const u=new URL(raw,location.href);
+      let id="";
+      if(u.hostname.includes("youtu.be"))id=u.pathname.split("/").filter(Boolean)[0]||"";
+      else if(u.pathname.includes("/shorts/"))id=u.pathname.split("/shorts/")[1].split("/")[0];
+      else if(u.pathname.includes("/embed/"))id=u.pathname.split("/embed/")[1].split("/")[0];
+      else id=u.searchParams.get("v")||"";
+      return {id,start:Number(u.searchParams.get("start")||0),end:Number(u.searchParams.get("end")||0)};
+    }catch(e){return {id:"",start:0,end:0};}
+  }
+  function embedSrc(raw,autoplay){
+    const v=parseYT(raw);if(!v.id)return "";
+    const p=new URLSearchParams({rel:"0",playsinline:"1",autoplay:autoplay?"1":"0"});
+    if(v.start>0)p.set("start",String(v.start));
+    if(v.end>0)p.set("end",String(v.end));
+    return "https://www.youtube.com/embed/"+v.id+"?"+p.toString();
+  }
+  toggleEmbed=function(cardEl,url,trigger){
+    const v=parseYT(url);if(!v.id)return;
+    const next=cardEl.nextElementSibling;
+    if(next&&next.classList.contains("embed")&&next.dataset.for===v.id){closeEmbed();return;}
+    closeEmbed();
+    const w=document.createElement("div");
+    w.className="embed";w.dataset.for=v.id;
+    w.innerHTML='<iframe src="'+embedSrc(url,true)+'" title="動画" allow="accelerometer;autoplay;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe>';
+    cardEl.after(w);curEmbed=w;
+    if(trigger){trigger.classList.add("playing");curTrigger=trigger;}
+  };
+
+  const source=clone({push:W.push,pull:W.pull,light:W.light});
+  const catalog=new Map();
+  Object.values(source).forEach(w=>[...(w.ex||[]),...(w.opt||[])].forEach(x=>{
+    if(!catalog.has(x.n))catalog.set(x.n,x);
+  }));
+
+  const groups={
+    chest:{label:"胸",sub:"胸・三頭",names:["プッシュアップバー腕立て","ダンベルベンチプレス","ダンベルフライ","ディップス"],videos:[
+      {n:"胸 2分｜プッシュアップバー｜0:30〜3:00",u:"https://youtu.be/ZI7URsS6VrA?start=30&end=180"}
+    ]},
+    abs:{label:"腹筋",sub:"下腹・腹全体",names:["レッグレイズ","腹筋ローラー","サポート・ニーレイズ","ロシアンツイスト"],videos:[
+      {n:"レッグレイズ｜下腹を一緒にやる",u:"https://youtu.be/C9xfentB4QA"},
+      {n:"腹筋 2分｜アブローラー｜1:40〜4:00",u:"https://youtu.be/R4vb8poJnv0?start=100&end=240"},
+      {n:"腹筋 6分｜シックスパック",u:"https://youtu.be/yfF-Q2NhVnE",want:1},
+      {n:"腹筋ローラー｜初心者向け",u:"https://youtu.be/fLbAZW0pZfo"},
+      {n:"ハンギングニーレイズ",u:"https://youtu.be/7bVKRM8GkdI"}
+    ]},
+    back:{label:"背中",sub:"背中・僧帽筋",names:["懸垂","ワンハンドダンベルロウ","ダンベルプルオーバー","シュラッグ","背中 自重3分（動画と一緒に）"],videos:[
+      {n:"背中 自重3分／懸垂伴走",u:"https://youtu.be/hj2j-RsUiSE"},
+      {n:"背筋 6分｜器具なし",u:"https://youtu.be/Q-LGg-58_ZU"}
+    ]},
+    arms:{label:"肩・腕",sub:"追加候補",names:["ダンベルショルダープレス","ダンベルリアレイズ","トライセプスエクステンション","ダンベルカール"],videos:[]}
+  };
+
+  const picker=document.createElement("section");
+  picker.className="today-picker";
+  picker.innerHTML='<div class="today-picker-kicker">Today\'s condition</div><div class="today-picker-title">筋肉痛のある部位を外す</div><div class="today-picker-sub">緑の部位だけ、今日の動画と種目に出す。胸・腹筋・背中を基本にして、肩・腕は必要な日に追加。</div><div class="today-chips"></div><div class="today-picker-note">選択はこの端末に保存。下のPUSH／PULL／軽めは従来メニューとして残してる。</div>';
+  q(".quick").before(picker);
+  const chips=picker.querySelector(".today-chips");
+
+  let selected;
+  try{selected=JSON.parse(localStorage.getItem("gainz.v17.selected")||"null");}catch(e){selected=null;}
+  if(!Array.isArray(selected)||!selected.length)selected=["chest","abs","back"];
+  selected=selected.filter(k=>groups[k]);
+  if(!selected.length)selected=["chest","abs","back"];
+
+  Object.entries(groups).forEach(([key,g])=>{
+    const b=document.createElement("button");
+    b.type="button";b.className="today-chip";b.dataset.group=key;
+    b.innerHTML=g.label+"<small>"+g.sub+"</small>";
+    b.addEventListener("click",()=>{
+      if(selected.includes(key)){
+        if(selected.length===1){showToast("最低1部位は残して");return;}
+        selected=selected.filter(x=>x!==key);
+      }else selected.push(key);
+      localStorage.setItem("gainz.v17.selected",JSON.stringify(selected));
+      applyToday();
+    });
+    chips.appendChild(b);
+  });
+
+  let sessionVideo="https://youtu.be/C9xfentB4QA";
+  sessionVideoHtml=function(autoplay){
+    const src=embedSrc(sessionVideo,autoplay);
+    return src?'<iframe src="'+src+'" title="今日の開始動画" allow="accelerometer;autoplay;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe>':"";
+  };
+
+  function uniqueByName(list){
+    const seen=new Set();return list.filter(x=>x&&!seen.has(x.n)&&(seen.add(x.n),true));
+  }
+  function makePlan(){
+    const ex=[];const videos=[];
+    selected.forEach(k=>{
+      groups[k].names.forEach(n=>{const x=catalog.get(n);if(x)ex.push(clone(x));});
+      groups[k].videos.forEach(v=>videos.push(clone(v)));
+    });
+    return {goal:Math.min(4,Math.max(1,ex.length)),ex:uniqueByName(ex),opt:[],vid:uniqueByName(videos)};
+  }
+  function applyToday(){
+    picker.querySelectorAll(".today-chip").forEach(b=>b.setAttribute("aria-pressed",selected.includes(b.dataset.group)?"true":"false"));
+    W.today=makePlan();NAME.today="TODAY";
+    const labels=selected.map(k=>groups[k].label);
+    sessionVideo=(W.today.vid[0]&&W.today.vid[0].u)||((W.today.ex[0]&&W.today.ex[0].f)||"https://youtu.be/C9xfentB4QA");
+    q("#quickTitle").textContent=labels.join("・")+"から30分";
+    q(".quick-sub").textContent="筋肉痛のある部位を外したメニュー。動画から始めて、今日の4種目が終われば30分未満でも終了してOK。";
+    q("#sessionNote").textContent="動画後は下の今日の種目へ。4種目終わればタイマー途中でも終了してOK。";
+    day="today";render();
+    q("#secTtl").innerHTML='💪 今日の種目 — <b style="color:var(--text)">4種目できたら十分</b> ・ 筋肉痛の部位は表示しない';
+    q("#vidSec").textContent="🎬 今日できる一緒にやる動画";
+  }
+
+  document.querySelectorAll(".tab").forEach(t=>t.addEventListener("click",()=>{
+    q("#secTtl").style.marginTop="18px";
+  },true));
+
+  const quick=q(".quick");
+  const sec=q("#secTtl");
+  const list=q("#list");
+  const vidSec=q("#vidSec");
+  const videos=q("#videos");
+  const tabs=q(".tabs");
+  const meta=q(".meta");
+  const cal=q(".cal");
+  const lower=document.createElement("div");
+  lower.className="sec lower-zone-title";
+  lower.textContent="📊 履歴・従来メニュー — 必要な時だけ見る";
+
+  quick.after(vidSec);
+  vidSec.after(videos);
+  videos.after(sec);
+  sec.after(list);
+  list.after(lower);
+  lower.after(tabs);
+  tabs.after(meta);
+  meta.after(cal);
+
+  const ver=q(".ver");if(ver)ver.textContent="Gainz v17 · 2026.08.07";
+  applyToday();
+})();
+</script>
+
+<script>
+const frame=document.getElementById("gainzFrame");
 frame.addEventListener("load",()=>{
   const d=frame.contentDocument;
   const boot=document.getElementById("boot");
   try{
     const st=d.createElement("style");
-    st.textContent=".lower-zone-title{margin-top:32px!important;color:var(--dim)!important}\n#secTtl{margin-top:18px}\n#vidSec{margin-top:22px}\n.quick-sub{max-width:760px}\n.ex .badge.today-main{background:var(--amber);color:#241f0d}";
+    st.textContent=document.getElementById("patchCss").textContent;
     d.head.appendChild(st);
     const sc=d.createElement("script");
-    sc.textContent="(()=>{\n  const q=s=>document.querySelector(s);\n  const all=[...W.push.ex,...W.push.opt];\n  const get=n=>all.find(x=>x.n===n);\n\n  const leg={...get(\"レッグレイズ\"),\n    s:\"動画1本 または 10〜15回 × 2セット\",\n    f:\"https://youtu.be/C9xfentB4QA\"\n  };\n  const bench={...get(\"ダンベルベンチプレス\"),\n    s:\"18kg × 8回 × 2セット\",w:18,timer:true,f:\"\"\n  };\n  const kneeBase=get(\"ハンギングニーレイズ\")||{};\n  const knee={...kneeBase,\n    n:\"サポート・ニーレイズ\",m:\"腹\",mc:\"abs\",\n    s:\"腰バーで体を浮かせて 10回 × 2セット\",\n    tag:\"腰バー\",tagType:\"bar\",timer:true,f:\"\",\n    c:\"肩をすくめず、反動なし。脚は上げられる高さまででOK\"\n  };\n  const push={...get(\"プッシュアップバー腕立て\"),\n    s:\"10回 × 2セット\",timer:true,f:\"\"\n  };\n\n  W.push.goal=4;\n  W.push.ex=[leg,bench,knee,push];\n  W.push.opt=[\n    get(\"腹筋ローラー\"),\n    get(\"ダンベルショルダープレス\"),\n    get(\"トライセプスエクステンション\"),\n    get(\"ダンベルフライ\"),\n    get(\"ディップス\")\n  ].filter(Boolean).map(x=>({...x,tag:x.tag||\"追加\"}));\n  W.push.vid=[\n    {n:\"レッグレイズ｜下腹を一緒にやる\",u:\"https://youtu.be/C9xfentB4QA\"},\n    {n:\"胸 2分｜プッシュアップバー\",u:\"https://youtu.be/ZI7URsS6VrA\"},\n    {n:\"腹筋 6分｜シックスパック\",u:\"https://youtu.be/yfF-Q2NhVnE\",want:1},\n    {n:\"腹筋 2分｜短時間メニュー\",u:\"https://youtu.be/R4vb8poJnv0\"}\n  ];\n  CUE[\"サポート・ニーレイズ\"]=[\n    \"腰バーを強く押して肩を下げる\",\n    \"体を揺らさず膝を腹へ引き上げる\",\n    \"10回きつければ回数を減らして2セット\"\n  ];\n\n  sessionVideoHtml=function(autoplay){\n    return '<iframe src=\"https://www.youtube.com/embed/C9xfentB4QA?rel=0&playsinline=1&autoplay='+\n      (autoplay?1:0)+'\" title=\"レッグレイズ動画\" allow=\"accelerometer;autoplay;encrypted-media;gyroscope;picture-in-picture\" allowfullscreen></iframe>';\n  };\n\n  q(\"#quickTitle\").textContent=\"腹筋から30分\";\n  q(\".quick-sub\").textContent=\"レッグレイズ動画から開始。今日の4種目が終わったら、30分未満でも終了してOK。\";\n  q(\"#sessionNote\").textContent=\"動画後は下の今日の4種目へ。全部終わればタイマー途中でも終了してOK。\";\n\n  day=\"push\";\n  render();\n  renderCal();\n\n  const quick=q(\".quick\");\n  const sec=q(\"#secTtl\");\n  const list=q(\"#list\");\n  const vidSec=q(\"#vidSec\");\n  const videos=q(\"#videos\");\n  const tabs=q(\".tabs\");\n  const meta=q(\".meta\");\n  const cal=q(\".cal\");\n  const lower=document.createElement(\"div\");\n  lower.className=\"sec lower-zone-title\";\n  lower.textContent=\"📊 履歴・別メニュー — 必要な時だけ見る\";\n\n  quick.after(vidSec);\n  vidSec.after(videos);\n  videos.after(sec);\n  sec.after(list);\n  list.after(lower);\n  lower.after(tabs);\n  tabs.after(meta);\n  meta.after(cal);\n\n  sec.innerHTML='💪 今日の4種目 — <b style=\"color:var(--text)\">上から順に、できるセット数でOK</b>';\n  vidSec.textContent=\"🎬 一緒にやる動画 — 今やりたい動画をすぐ選ぶ\";\n  const ver=q(\".ver\");\n  if(ver)ver.textContent=\"Gainz v16 · 2026.08.06\";\n})();";
+    sc.textContent=document.getElementById("patchSource").textContent;
     d.body.appendChild(sc);
     boot.remove();
   }catch(e){
-    boot.textContent="Gainzの更新読み込みに失敗。Ctrl＋F5でもう一度更新して。";
+    boot.textContent="Gainzの更新読み込みに失敗。再読み込みして。";
     console.error(e);
   }
-});</script>
+});
+</script>
 </body>
 </html>
