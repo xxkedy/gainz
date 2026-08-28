@@ -12,8 +12,8 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#0a0a0c}
 </style>
 </head>
 <body>
-<div id="boot">Gainz v18.2を準備中…</div>
-<iframe id="gainzFrame" src="./legacy.html?v=18.2" title="Gainz"></iframe>
+<div id="boot">Gainz v18.3を準備中…</div>
+<iframe id="gainzFrame" src="./legacy.html?v=18.3" title="Gainz"></iframe>
 
 <script id="patchCss" type="text/plain">
 .lower-zone-title{margin-top:32px!important;color:var(--dim)!important}
@@ -55,7 +55,11 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#0a0a0c}
 .today-chip[aria-pressed="true"]::after{content:"✓";position:absolute;top:5px;right:6px;font-size:9px;line-height:1}
 .today-picker-note{font-size:10.5px;color:var(--dim);margin-top:8px}
 .session-start:disabled{opacity:.42;cursor:not-allowed;transform:none!important}
-@media(max-width:520px){.quick-overview{grid-template-columns:1fr}.session-video-actions{grid-template-columns:1fr 1fr}.session-video-actions a{grid-column:1/-1}.today-chips{grid-template-columns:repeat(2,minmax(0,1fr))}.today-chip{min-height:72px}.today-chip-icon{font-size:27px}}
+.ab-reminder{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:12px 0 8px;padding:13px 14px;border:1px solid #6e5318;border-radius:14px;background:linear-gradient(135deg,rgba(245,158,11,.13),rgba(255,255,255,.025))}
+.ab-reminder-copy{min-width:0}.ab-reminder strong{display:block;color:#ffd178;font-size:14px}.ab-reminder span{display:block;margin-top:4px;color:var(--sub);font-size:10.5px;line-height:1.45}
+.ab-reminder-actions{display:flex;flex:none;gap:6px}.ab-reminder a,.ab-reminder button{display:flex;align-items:center;justify-content:center;min-height:38px;border:1px solid #6e5318;border-radius:10px;padding:8px 10px;background:var(--card2);color:#ffd178;font:800 10.5px/1 inherit;text-decoration:none;cursor:pointer}
+.ab-reminder button{border-color:#3d6e59;color:#7de2b3}.ab-reminder.is-done{border-color:#315f4b;background:rgba(45,212,191,.07)}.ab-reminder.is-done strong{color:#7de2b3}
+@media(max-width:520px){.quick-overview{grid-template-columns:1fr}.session-video-actions{grid-template-columns:1fr 1fr}.session-video-actions a{grid-column:1/-1}.today-chips{grid-template-columns:repeat(2,minmax(0,1fr))}.today-chip{min-height:72px}.today-chip-icon{font-size:27px}.ab-reminder{align-items:stretch;flex-direction:column}.ab-reminder-actions{display:grid;grid-template-columns:1fr 1fr}.ab-reminder a,.ab-reminder button{width:100%}}
 @media(max-width:360px){.today-chip{min-height:64px}.today-chips{gap:6px}}
 </script>
 
@@ -248,6 +252,23 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#0a0a0c}
   videoTools.innerHTML='<div class="session-video-actions"><button id="sessionReplay" type="button">↻ もう一度</button><button id="sessionNextVideo" type="button">次の動画 ▶</button><a id="sessionYouTube" href="https://youtube.com/" target="_blank" rel="noopener">YouTubeで開く ↗</a></div><div class="session-status" id="sessionStatus" aria-live="polite"></div><div class="session-next"><div class="session-next-label">NEXT EXERCISE</div><div class="session-next-title" id="sessionNextTitle">—</div><div class="session-next-detail" id="sessionNextDetail"></div></div>';
   q("#sessionVideo").after(videoTools);
 
+  const abReminder=document.createElement("div");
+  abReminder.className="ab-reminder";
+  abReminder.innerHTML='<div class="ab-reminder-copy"><strong>🔥 毎回｜アブローラー</strong><span>膝コロ 6〜12回 × 3セット。30分を超えそうなら通常種目を1つ減らしてこれ優先。腹筋に強い筋肉痛がある日はスキップ。</span></div><div class="ab-reminder-actions"><a href="https://youtu.be/R4vb8poJnv0?t=100" target="_blank" rel="noopener">▶ 一緒にやる</a><button id="abReminderDone" type="button">✓ やった</button></div>';
+  function abDoneKey(){return "gainz.v18.abRollerDone."+today();}
+  function abDone(){return localStorage.getItem(abDoneKey())==="1";}
+  function updateAbReminder(){
+    const done=abDone();
+    abReminder.classList.toggle("is-done",done);
+    q("#abReminderDone").textContent=done?"✓ 今日やった":"✓ やった";
+  }
+  q("#abReminderDone").addEventListener("click",()=>{
+    const next=!abDone();
+    if(next)localStorage.setItem(abDoneKey(),"1");else localStorage.removeItem(abDoneKey());
+    updateAbReminder();updateQuickContext();
+    showToast(next?"アブローラー完了 ✓":"アブローラー完了を戻した");
+  });
+
   let sessionQueue=[];
   let activeVideoIndex=0;
   let failedVideoIds=new Set();
@@ -307,7 +328,8 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#0a0a0c}
   function updateQuickContext(){
     const v=currentVideo(),e=nextExercise();
     const empty=!W.today?.ex?.length;
-    const doneLabel=`今日の${W.today?.goal||4}種目完了 ✓`;
+    const workoutDone=!empty&&!e;
+    const doneLabel=workoutDone&&!abDone()?"🔥 最後にアブローラーやった？":`今日の${W.today?.goal||4}種目完了 ✓`;
     q("#quickVideoTitle").textContent=empty?"部位を選ぶと表示":v?v.title:"動画候補なし";
     q("#sessionVideoTitle").textContent=empty?"部位未選択":v?v.title:"動画候補なし";
     q("#sessionVideoCount").textContent=v?`${activeVideoIndex+1} / ${sessionQueue.length}`:"";
@@ -315,7 +337,7 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#0a0a0c}
     q("#sessionYouTube").hidden=!v;q("#sessionReplay").disabled=!v;q("#sessionNextVideo").disabled=!v;
     q("#quickNextTitle").textContent=empty?"上から部位を選んで":e?e.n:doneLabel;
     q("#sessionNextTitle").textContent=empty?"上から部位を選んで":e?e.n:doneLabel;
-    q("#sessionNextDetail").textContent=empty?"選ぶと今日の種目が出ます":e?e.s:"タイマー途中でも終了してOK";
+    q("#sessionNextDetail").textContent=empty?"選ぶと今日の種目が出ます":e?e.s:workoutDone&&!abDone()?"膝コロ 6〜12回 × 3セット":"タイマー途中でも終了してOK";
   }
   function updatePickerState(){
     picker.querySelectorAll(".today-chip").forEach(b=>b.setAttribute("aria-pressed",selected.includes(b.dataset.group)?"true":"false"));
@@ -325,7 +347,7 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#0a0a0c}
     const start=q("#sessionStart");start.disabled=!selected.length;
     if(!sessionEnd())start.textContent=selected.length?"▶ 30分トレーニング開始":"上から部位を選んで開始";
   }
-  function setSessionStatus(text){q("#sessionStatus").textContent=text||"";}
+  function setSessionStatus(text){q("#sessionStatus").textContent=text||"");}
   function destroySessionPlayer(){
     playerToken++;
     if(sessionPlayer&&typeof sessionPlayer.destroy==="function"){try{sessionPlayer.destroy();}catch(e){}}
@@ -405,7 +427,7 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#0a0a0c}
   };
   showSession=function(autoplay){
     q("#sessionStart").hidden=true;q("#sessionPanel").hidden=false;
-    q("#sessionNote").textContent=W.today?.goal?`動画後は下の今日の種目へ。${W.today.goal}種目終わればタイマー途中でも終了してOK。`:"上から部位を選んでください。";
+    q("#sessionNote").textContent=W.today?.goal?`動画後は下の今日の種目へ。${W.today.goal}種目のあとアブローラー確認。30分を超えそうなら通常種目を1つ減らしてOK。`:"上から部位を選んでください。";
     clearSessionInterval();updateSessionClock();
     if(sessionEnd()>Date.now())sessionIv=setInterval(updateSessionClock,1000);
     mountSessionPlayer(autoplay);
@@ -431,11 +453,12 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#0a0a0c}
     syncSessionQueue();
     const labels=selected.map(k=>groups[k].label);
     q("#quickTitle").textContent=selected.length?labels.join("・")+"から30分":"部位を選んでスタート";
-    q(".quick-sub").textContent=selected.length?`筋肉痛のある部位を外したメニュー。動画から始めて、今日の${W.today.goal}種目が終われば30分未満でも終了してOK。`:"上のボタンから今日やる部位を選ぶと、動画と種目が表示されます。";
-    q("#sessionNote").textContent=selected.length?`動画後は下の今日の種目へ。${W.today.goal}種目終わればタイマー途中でも終了してOK。`:"上から部位を選んでください。";
+    q(".quick-sub").textContent=selected.length?`筋肉痛のある部位を外したメニュー。今日の${W.today.goal}種目＋最後にアブローラー確認。30分を超えそうなら通常種目を1つ減らしてOK。`:"上のボタンから今日やる部位を選ぶと、動画と種目が表示されます。";
+    q("#sessionNote").textContent=selected.length?`動画後は下の今日の種目へ。${W.today.goal}種目のあとアブローラー確認。30分を超えそうなら通常種目を1つ減らしてOK。`:"上から部位を選んでください。";
     day="today";render();
-    q("#secTtl").innerHTML=selected.length?`💪 今日の種目 — <b style="color:var(--text)">${W.today.goal}種目できたら十分</b> ・ 筋肉痛の部位は表示しない`:'💪 今日の種目 — <b style="color:var(--text)">部位を選ぶと表示</b>';
+    q("#secTtl").innerHTML=selected.length?`💪 今日の種目 — <b style="color:var(--text)">${W.today.goal}種目できたら十分</b> ・ 最後にアブローラー確認`:'💪 今日の種目 — <b style="color:var(--text)">部位を選ぶと表示</b>';
     q("#vidSec").textContent="🎬 今日できる一緒にやる動画";
+    abReminder.hidden=!selected.length;updateAbReminder();
     updateQuickContext();updateStartState();
     if(sessionEnd()>Date.now())showSession(false);
   }
@@ -460,12 +483,13 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#0a0a0c}
   vidSec.after(videos);
   videos.after(sec);
   sec.after(list);
-  list.after(lower);
+  list.after(abReminder);
+  abReminder.after(lower);
   lower.after(tabs);
   tabs.after(meta);
   meta.after(cal);
 
-  const ver=q(".ver");if(ver)ver.textContent="Gainz v18.2 · 2026.08.25";
+  const ver=q(".ver");if(ver)ver.textContent="Gainz v18.3 · 2026.08.28";
   applyToday();
 })();
 </script>
@@ -491,4 +515,3 @@ frame.addEventListener("load",()=>{
 </script>
 </body>
 </html>
-
