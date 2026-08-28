@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0a0a0c">
+<title>Gainz</title>
+<style>
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#0a0a0c}
+#gainzFrame{display:block;width:100%;height:100dvh;border:0;background:#0a0a0c}
+#boot{position:fixed;inset:0;display:grid;place-items:center;background:#0a0a0c;color:#a2a2ad;font:13px -apple-system,BlinkMacSystemFont,"Helvetica Neue","Yu Gothic",sans-serif}
+</style>
+</head>
+<body>
+<div id="boot">Gainz v18.3を準備中…</div>
+<iframe id="gainzFrame" src="./legacy.html?v=18.3" title="Gainz"></iframe>
+
+<script id="patchCss" type="text/plain">
+.lower-zone-title{margin-top:32px!important;color:var(--dim)!important}
+#secTtl{margin-top:18px}
+#vidSec{margin-top:22px}
+.quick-sub{max-width:760px}
+.quick-overview{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:12px 0}
+.quick-fact{min-width:0;padding:11px 12px;background:rgba(255,255,255,.035);border:1px solid var(--line);border-radius:12px}
+.quick-fact-label{display:block;color:var(--dim);font-size:9.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase}
+.quick-fact strong{display:block;overflow:hidden;margin-top:4px;color:var(--text);font-size:13px;line-height:1.35;text-overflow:ellipsis;white-space:nowrap}
+.session-top{margin-top:4px}
+.session-video{position:relative}
+.session-player-mount{width:100%;height:100%}
+.session-video-state{display:grid;width:100%;height:100%;place-items:center;padding:22px;text-align:center;background:linear-gradient(145deg,#101015,#050506)}
+.session-video-state b{display:block;font-size:14px}.session-video-state span{display:block;margin-top:6px;color:var(--sub);font-size:11px;line-height:1.5}
+.session-video-state a{display:inline-flex;margin-top:13px;border:1px solid var(--accent);border-radius:10px;padding:10px 14px;color:#fff;background:var(--accent);font-size:12px;font-weight:800;text-decoration:none}
+.session-video-meta{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin:10px 0 8px}
+.session-video-copy{min-width:0}.session-video-kicker{color:var(--accent2);font-size:9.5px;font-weight:800;letter-spacing:.1em}.session-video-title{overflow:hidden;margin-top:3px;font-size:14px;font-weight:800;line-height:1.35;text-overflow:ellipsis;white-space:nowrap}
+.session-video-count{flex:none;color:var(--dim);font-size:10.5px}
+.session-video-actions{display:grid;grid-template-columns:1fr 1fr 1.25fr;gap:6px;margin-top:8px}
+.session-video-actions button,.session-video-actions a{display:flex;align-items:center;justify-content:center;min-height:40px;border:1px solid var(--line);border-radius:10px;padding:8px;background:var(--card2);color:var(--sub);font:800 11px/1.2 inherit;text-align:center;text-decoration:none;cursor:pointer}
+.session-video-actions button:disabled{opacity:.38;cursor:default}
+.session-video-actions a{border-color:#4a4030;color:#ffd178}
+.session-status{min-height:16px;margin-top:7px;color:var(--dim);font-size:10.5px;line-height:1.45}
+.session-next{margin-top:9px;padding:11px 12px;border-left:3px solid var(--cyan);border-radius:9px;background:var(--card2)}
+.session-next-label{color:var(--cyan);font-size:9.5px;font-weight:800;letter-spacing:.08em}.session-next-title{margin-top:3px;font-size:13px;font-weight:800}.session-next-detail{margin-top:2px;color:var(--sub);font-size:10.5px}
+.embed{position:relative}.embed-open{position:absolute;right:8px;bottom:8px;z-index:2;border:1px solid rgba(255,255,255,.28);border-radius:8px;padding:7px 9px;background:rgba(8,8,10,.88);color:#fff;font-size:10.5px;font-weight:800;text-decoration:none;backdrop-filter:blur(5px)}
+.ex .badge.today-main{background:var(--amber);color:#241f0d}
+.today-picker{margin:14px 0 10px;padding:14px;background:var(--card);border:1px solid var(--line);border-radius:16px}
+.today-picker-head{display:flex;align-items:flex-end;justify-content:space-between;gap:10px}
+.today-picker-title{font-size:18px;font-weight:800;line-height:1.2}
+.today-picker-actions{display:flex;align-items:center;gap:7px}.today-picker-count{font-size:10.5px;color:var(--sub);white-space:nowrap}
+.today-clear{border:1px solid var(--line);border-radius:8px;padding:6px 8px;background:var(--card2);color:var(--sub);font:800 10.5px/1 inherit;cursor:pointer}.today-clear:disabled{opacity:.38;cursor:default}
+.today-chips{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:11px}
+.today-chip{position:relative;min-width:0;min-height:68px;border:1.5px solid var(--line);background:var(--card2);color:var(--sub);border-radius:14px;padding:8px 3px;font:800 14px/1 inherit;cursor:pointer;text-align:center;white-space:nowrap;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px}
+.today-chip-icon{font-size:25px;line-height:1;filter:grayscale(.35);opacity:.82}.today-chip-label{font-size:13px;line-height:1}
+.today-chip[aria-pressed="true"]{border-color:#2dd4bf;background:#0d2a27;color:#2dd4bf}
+.today-chip[aria-pressed="true"] .today-chip-icon{filter:none;opacity:1}
+.today-chip[aria-pressed="true"]::after{content:"✓";position:absolute;top:5px;right:6px;font-size:9px;line-height:1}
+.today-picker-note{font-size:10.5px;color:var(--dim);margin-top:8px}
+.session-start:disabled{opacity:.42;cursor:not-allowed;transform:none!important}
+.ab-reminder{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:12px 0 8px;padding:13px 14px;border:1px solid #6e5318;border-radius:14px;background:linear-gradient(135deg,rgba(245,158,11,.13),rgba(255,255,255,.025))}
+.ab-reminder-copy{min-width:0}.ab-reminder strong{display:block;color:#ffd178;font-size:14px}.ab-reminder span{display:block;margin-top:4px;color:var(--sub);font-size:10.5px;line-height:1.45}
+.ab-reminder-actions{display:flex;flex:none;gap:6px}.ab-reminder a,.ab-reminder button{display:flex;align-items:center;justify-content:center;min-height:38px;border:1px solid #6e5318;border-radius:10px;padding:8px 10px;background:var(--card2);color:#ffd178;font:800 10.5px/1 inherit;text-decoration:none;cursor:pointer}
+.ab-reminder button{border-color:#3d6e59;color:#7de2b3}.ab-reminder.is-done{border-color:#315f4b;background:rgba(45,212,191,.07)}.ab-reminder.is-done strong{color:#7de2b3}
+@media(max-width:520px){.quick-overview{grid-template-columns:1fr}.session-video-actions{grid-template-columns:1fr 1fr}.session-video-actions a{grid-column:1/-1}.today-chips{grid-template-columns:repeat(2,minmax(0,1fr))}.today-chip{min-height:72px}.today-chip-icon{font-size:27px}.ab-reminder{align-items:stretch;flex-direction:column}.ab-reminder-actions{display:grid;grid-template-columns:1fr 1fr}.ab-reminder a,.ab-reminder button{width:100%}}
+@media(max-width:360px){.today-chip{min-height:64px}.today-chips{gap:6px}}
+</script>
+
+<script id="patchSource" type="text/plain">
+(()=>{
+  const q=s=>document.querySelector(s);
+  const clone=x=>JSON.parse(JSON.stringify(x));
+  const compact=u=>String(u||"").trim();
+
+  function items(){
+    return ["push","pull","light"].flatMap(k=>[...(W[k].ex||[]),...(W[k].opt||[])]);
+  }
+  function byName(name){
+    return items().find(x=>x.n===name);
+  }
+  function setUrl(name,url){
+    const x=byName(name);if(x)x.f=url;
+  }
+  function removeByName(name){
+    ["push","pull","light"].forEach(k=>{
+      W[k].ex=(W[k].ex||[]).filter(x=>x.n!==name);
+      W[k].opt=(W[k].opt||[]).filter(x=>x.n!==name);
+    });
+  }
+
+  setUrl("ダンベルベンチプレス","https://youtube.com/shorts/N4dCNxgtJ-s");
+  setUrl("ディップス","https://youtube.com/shorts/9I-qZXJ2r14");
+  setUrl("ワンハンドダンベルロウ","https://youtube.com/shorts/0LY1bGPPsRk");
+  setUrl("ダンベルプルオーバー","https://youtube.com/shorts/bdrveQwk9-s");
+  removeByName("胸ドアストレッチ");
+  removeByName("斜め懸垂（インバーテッドロウ）");
+  removeByName("ハンマーカール");
+
+  const pick=name=>{const x=byName(name);return x?clone(x):null;};
+  const leg={...pick("レッグレイズ"),s:"動画1本 または 10〜15回 × 2セット",f:"https://youtu.be/C9xfentB4QA"};
+  const bench={...pick("ダンベルベンチプレス"),s:"18kg × 8回 × 2セット",w:18,timer:true};
+  const kneeBase=pick("ハンギングニーレイズ")||{};
+  const knee={...kneeBase,n:"サポート・ニーレイズ",m:"腹",mc:"abs",s:"腰バーで体を浮かせて 10回 × 2セット",tag:"腰バー",tagType:"bar",timer:true,c:"肩をすくめず、反動なし。脚は上げられる高さまででOK"};
+  const push={...pick("プッシュアップバー腕立て"),s:"10回 × 2セット",timer:true};
+  W.push.goal=4;
+  W.push.ex=[leg,bench,knee,push].filter(Boolean);
+  W.push.opt=[pick("腹筋ローラー"),pick("ダンベルショルダープレス"),pick("トライセプスエクステンション"),pick("ダンベルフライ"),pick("ディップス")].filter(Boolean).map(x=>({...x,tag:x.tag||"追加"}));
+  CUE["サポート・ニーレイズ"]=["腰バーを強く押して肩を下げる","体を揺らさず膝を腹へ引き上げる","10回きつければ回数を減らして2セット"];
+
+  const followNames=[
+    "腹筋ローラー","ハンギングニーレイズ","サポート・ニーレイズ","シュラッグ",
+    "ダンベルショルダープレス","トライセプスエクステンション","ダンベルカール"
+  ];
+  const shortFormNames=[
+    "ダンベルベンチプレス","ディップス","ワンハンドダンベルロウ","ダンベルプルオーバー"
+  ];
+  [...followNames,...shortFormNames].forEach(n=>{
+    FOLLOW.add(n);
+    delete CUE[n];
+  });
+
+  W.push.vid=[
+    {n:"胸 2分｜プッシュアップバー｜0:30〜3:00",u:"https://youtu.be/ZI7URsS6VrA?start=30&end=180"},
+    {n:"腹筋 2分｜アブローラー｜1:40〜4:00",u:"https://youtu.be/R4vb8poJnv0?start=100&end=240"},
+    {n:"腹筋 6分｜シックスパック",u:"https://youtu.be/yfF-Q2NhVnE",want:1}
+  ];
+
+  function parseYT(raw){
+    try{
+      const u=new URL(raw,location.href);
+      let id="";
+      if(u.hostname.includes("youtu.be"))id=u.pathname.split("/").filter(Boolean)[0]||"";
+      else if(u.pathname.includes("/shorts/"))id=u.pathname.split("/shorts/")[1].split("/")[0];
+      else if(u.pathname.includes("/embed/"))id=u.pathname.split("/embed/")[1].split("/")[0];
+      else id=u.searchParams.get("v")||"";
+      return {id,start:Number(u.searchParams.get("start")||0),end:Number(u.searchParams.get("end")||0)};
+    }catch(e){return {id:"",start:0,end:0};}
+  }
+  function embedSrc(raw,autoplay){
+    const v=parseYT(raw);if(!v.id)return "";
+    const p=new URLSearchParams({rel:"0",playsinline:"1",autoplay:autoplay?"1":"0"});
+    if(v.start>0)p.set("start",String(v.start));
+    if(v.end>0)p.set("end",String(v.end));
+    return "https://www.youtube-nocookie.com/embed/"+v.id+"?"+p.toString();
+  }
+  toggleEmbed=function(cardEl,url,trigger){
+    const v=parseYT(url);if(!v.id)return;
+    const next=cardEl.nextElementSibling;
+    if(next&&next.classList.contains("embed")&&next.dataset.for===v.id){closeEmbed();return;}
+    closeEmbed();
+    const w=document.createElement("div");
+    w.className="embed";w.dataset.for=v.id;
+    const openUrl="https://youtu.be/"+v.id+(v.start?"?t="+v.start:"");
+    w.innerHTML='<iframe src="'+embedSrc(url,true)+'" title="動画" allow="accelerometer;autoplay;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe><a class="embed-open" href="'+openUrl+'" target="_blank" rel="noopener">YouTubeで開く ↗</a>';
+    cardEl.after(w);curEmbed=w;
+    if(trigger){trigger.classList.add("playing");curTrigger=trigger;}
+  };
+
+  function relabelVideoButtons(){
+    document.querySelectorAll("#list .ex").forEach(card=>{
+      const name=(card.querySelector(".name")||{}).textContent||"";
+      const btn=card.querySelector(".howto");
+      if(!btn)return;
+      if(followNames.some(n=>name.includes(n)))btn.textContent="▶ 一緒にやる";
+      else if(shortFormNames.some(n=>name.includes(n)))btn.textContent="▶ フォーム動画";
+    });
+    document.querySelectorAll("#list .vlink").forEach(btn=>{
+      btn.textContent="▶ フォーム動画";
+    });
+  }
+  const baseRender=render;
+  render=function(){
+    baseRender();
+    relabelVideoButtons();
+  };
+
+  const source=clone({push:W.push,pull:W.pull,light:W.light});
+  const catalog=new Map();
+  Object.values(source).forEach(w=>[...(w.ex||[]),...(w.opt||[])].forEach(x=>{
+    if(!catalog.has(x.n))catalog.set(x.n,x);
+  }));
+
+  const groups={
+    chest:{label:"胸",icon:"🏋️",sub:"胸・三頭",names:["プッシュアップバー腕立て","ダンベルベンチプレス","ダンベルフライ","ディップス"],videos:[
+      {n:"胸 2分｜プッシュアップバー｜0:30〜3:00",u:"https://youtu.be/ZI7URsS6VrA?start=30&end=180"}
+    ]},
+    abs:{label:"腹筋",icon:"🔥",sub:"下腹・腹全体",names:["レッグレイズ","腹筋ローラー","サポート・ニーレイズ","ロシアンツイスト"],videos:[
+      {n:"レッグレイズ｜下腹を一緒にやる",u:"https://youtu.be/C9xfentB4QA"},
+      {n:"腹筋 2分｜アブローラー｜1:40〜4:00",u:"https://youtu.be/R4vb8poJnv0?start=100&end=240"},
+      {n:"腹筋 6分｜シックスパック",u:"https://youtu.be/yfF-Q2NhVnE",want:1},
+      {n:"腹筋ローラー｜初心者向け",u:"https://youtu.be/fLbAZW0pZfo"},
+      {n:"ハンギングニーレイズ",u:"https://youtu.be/7bVKRM8GkdI"}
+    ]},
+    back:{label:"背中",icon:"🪽",sub:"背中・僧帽筋",names:["懸垂","ワンハンドダンベルロウ","ダンベルプルオーバー","シュラッグ","背中 自重3分（動画と一緒に）"],videos:[
+      {n:"背中 自重3分／懸垂伴走",u:"https://youtu.be/hj2j-RsUiSE"},
+      {n:"背筋 6分｜器具なし",u:"https://youtu.be/Q-LGg-58_ZU"}
+    ]},
+    arms:{label:"肩腕",icon:"💪",sub:"追加候補",names:["ダンベルショルダープレス","ダンベルリアレイズ","トライセプスエクステンション","ダンベルカール"],videos:[]}
+  };
+
+  const picker=document.createElement("section");
+  picker.className="today-picker";
+  picker.innerHTML='<div class="today-picker-head"><div class="today-picker-title">今日やる部位</div><div class="today-picker-actions"><span class="today-picker-count" id="todayPickerCount">0/4 選択</span><button class="today-clear" id="todayClear" type="button">全部外す</button></div></div><div class="today-chips"></div><div class="today-picker-note">緑＝やる・グレー＝やらない。全部外してから選び直してOK</div>';
+  q(".quick").before(picker);
+  const chips=picker.querySelector(".today-chips");
+
+  let selected;
+  try{selected=JSON.parse(localStorage.getItem("gainz.v17.selected")||"null");}catch(e){selected=null;}
+  if(!Array.isArray(selected))selected=["chest","abs","back"];
+  selected=selected.filter(k=>groups[k]);
+  const groupOrder=Object.keys(groups);
+  selected=groupOrder.filter(k=>selected.includes(k));
+
+  Object.entries(groups).forEach(([key,g])=>{
+    const b=document.createElement("button");
+    b.type="button";b.className="today-chip";b.dataset.group=key;
+    b.innerHTML='<span class="today-chip-icon" aria-hidden="true">'+g.icon+'</span><span class="today-chip-label">'+g.label+'</span>';
+    b.setAttribute("aria-label",g.label);
+    b.addEventListener("click",()=>{
+      if(selected.includes(key)){
+        selected=selected.filter(x=>x!==key);
+      }else selected.push(key);
+      selected=groupOrder.filter(k=>selected.includes(k));
+      localStorage.setItem("gainz.v17.selected",JSON.stringify(selected));
+      applyToday();
+    });
+    chips.appendChild(b);
+  });
+  q("#todayClear").addEventListener("click",()=>{
+    selected=[];localStorage.setItem("gainz.v17.selected","[]");applyToday();showToast("全部外した。今日やる部位を選んで");
+  });
+
+  function uniqueByName(list){
+    const seen=new Set();return list.filter(x=>x&&!seen.has(x.n)&&(seen.add(x.n),true));
+  }
+  function makePlan(){
+    const ex=[];const videos=[];
+    selected.forEach(k=>{
+      groups[k].names.forEach(n=>{const x=catalog.get(n);if(x)ex.push(clone(x));});
+      groups[k].videos.forEach(v=>videos.push(clone(v)));
+    });
+    return {goal:Math.min(4,ex.length),ex:uniqueByName(ex),opt:[],vid:uniqueByName(videos)};
+  }
+
+  const overview=document.createElement("div");
+  overview.className="quick-overview";
+  overview.innerHTML='<div class="quick-fact"><span class="quick-fact-label">今の動画</span><strong id="quickVideoTitle">—</strong></div><div class="quick-fact"><span class="quick-fact-label">次の種目</span><strong id="quickNextTitle">—</strong></div>';
+  q(".quick-sub").after(overview);
+
+  const videoMeta=document.createElement("div");
+  videoMeta.className="session-video-meta";
+  videoMeta.innerHTML='<div class="session-video-copy"><div class="session-video-kicker">NOW PLAYING</div><div class="session-video-title" id="sessionVideoTitle">—</div></div><div class="session-video-count" id="sessionVideoCount"></div>';
+  q("#sessionVideo").before(videoMeta);
+  const videoTools=document.createElement("div");
+  videoTools.innerHTML='<div class="session-video-actions"><button id="sessionReplay" type="button">↻ もう一度</button><button id="sessionNextVideo" type="button">次の動画 ▶</button><a id="sessionYouTube" href="https://youtube.com/" target="_blank" rel="noopener">YouTubeで開く ↗</a></div><div class="session-status" id="sessionStatus" aria-live="polite"></div><div class="session-next"><div class="session-next-label">NEXT EXERCISE</div><div class="session-next-title" id="sessionNextTitle">—</div><div class="session-next-detail" id="sessionNextDetail"></div></div>';
+  q("#sessionVideo").after(videoTools);
+
+  const abReminder=document.createElement("div");
+  abReminder.className="ab-reminder";
+  abReminder.innerHTML='<div class="ab-reminder-copy"><strong>🔥 毎回｜アブローラー</strong><span>膝コロ 6〜12回 × 3セット。30分を超えそうなら通常種目を1つ減らしてこれ優先。腹筋に強い筋肉痛がある日はスキップ。</span></div><div class="ab-reminder-actions"><a href="https://youtu.be/R4vb8poJnv0?t=100" target="_blank" rel="noopener">▶ 一緒にやる</a><button id="abReminderDone" type="button">✓ やった</button></div>';
+  const abReminderDone=abReminder.querySelector("#abReminderDone");
+  function abDoneKey(){return "gainz.v18.abRollerDone."+today();}
+  function abDone(){return localStorage.getItem(abDoneKey())==="1";}
+  function updateAbReminder(){
+    const done=abDone();
+    abReminder.classList.toggle("is-done",done);
+    abReminderDone.textContent=done?"✓ 今日やった":"✓ やった";
+  }
+  abReminderDone.addEventListener("click",()=>{
+    const next=!abDone();
+    if(next)localStorage.setItem(abDoneKey(),"1");else localStorage.removeItem(abDoneKey());
+    updateAbReminder();updateQuickContext();
+    showToast(next?"アブローラー完了 ✓":"アブローラー完了を戻した");
+  });
+
+  let sessionQueue=[];
+  let activeVideoIndex=0;
+  let failedVideoIds=new Set();
+  let sessionPlayer=null;
+  let playerToken=0;
+  let ytApiPromise=null;
+  function queueItem(v){
+    const p=parseYT(v.u||v.f||"");
+    return p.id?{id:p.id,start:p.start,end:p.end,title:v.n||"トレーニング動画",url:v.u||v.f}:null;
+  }
+  function buildSessionQueue(){
+    const seen=new Set();
+    return [...(W.today?.vid||[]),...(W.today?.ex||[])].map(queueItem).filter(v=>v&&!seen.has(v.id)&&(seen.add(v.id),true));
+  }
+  function syncSessionQueue(){
+    const current=sessionQueue[activeVideoIndex]?.id;
+    sessionQueue=buildSessionQueue();
+    const keep=sessionQueue.findIndex(v=>v.id===current);
+    activeVideoIndex=keep>=0?keep:0;
+    if(!sessionQueue.some(v=>v.id===current))failedVideoIds.clear();
+  }
+  function currentVideo(){return sessionQueue[activeVideoIndex]||null;}
+  function completedNamesFromStoredPlan(){
+    const names=gj("gainz.v18.todayPlanNames",[]);
+    const checks=((DAYS()[today()]||{}).today)||{};
+    const bank=gj("gainz.v18.todayCompletedNames",[]);
+    return new Set([...bank,...names.filter((_,i)=>checks["e"+i])]);
+  }
+  function saveTodayPlan(doneNames){
+    sj("gainz.v18.todayCompletedNames",[...doneNames]);
+    if(!W.today.ex.length)return;
+    const ds=DAYS(),td=today();ds[td]=ds[td]||{};
+    if(doneNames.size){
+      const next={};W.today.ex.forEach((e,i)=>{if(doneNames.has(e.n))next["e"+i]=true;});
+      ds[td].today=next;sj("k.days",ds);
+    }
+    sj("gainz.v18.todayPlanNames",W.today.ex.map(e=>e.n));
+  }
+  function syncCompletedBank(){
+    const bank=new Set(gj("gainz.v18.todayCompletedNames",[]));
+    const checks=((DAYS()[today()]||{}).today)||{};
+    (W.today?.ex||[]).forEach((e,i)=>{if(checks["e"+i])bank.add(e.n);else bank.delete(e.n);});
+    sj("gainz.v18.todayCompletedNames",[...bank]);
+  }
+  function nextExercise(){
+    const checks=((DAYS()[today()]||{}).today)||{};
+    const done=(W.today?.ex||[]).reduce((n,_,idx)=>n+(checks["e"+idx]?1:0),0);
+    if(done>=(W.today?.goal||4))return null;
+    const i=(W.today?.ex||[]).findIndex((_,idx)=>!checks["e"+idx]);
+    return i>=0?W.today.ex[i]:null;
+  }
+  function youtubeUrl(v){
+    if(!v)return "https://youtube.com/";
+    const p=new URLSearchParams();if(v.start)p.set("t",String(v.start));
+    return `https://youtu.be/${v.id}${p.toString()?"?"+p.toString():""}`;
+  }
+  function updateQuickContext(){
+    const v=currentVideo(),e=nextExercise();
+    const empty=!W.today?.ex?.length;
+    const workoutDone=!empty&&!e;
+    const doneLabel=workoutDone&&!abDone()?"🔥 最後にアブローラーやった？":`今日の${W.today?.goal||4}種目完了 ✓`;
+    q("#quickVideoTitle").textContent=empty?"部位を選ぶと表示":v?v.title:"動画候補なし";
+    q("#sessionVideoTitle").textContent=empty?"部位未選択":v?v.title:"動画候補なし";
+    q("#sessionVideoCount").textContent=v?`${activeVideoIndex+1} / ${sessionQueue.length}`:"";
+    q("#sessionYouTube").href=youtubeUrl(v);
+    q("#sessionYouTube").hidden=!v;q("#sessionReplay").disabled=!v;q("#sessionNextVideo").disabled=!v;
+    q("#quickNextTitle").textContent=empty?"上から部位を選んで":e?e.n:doneLabel;
+    q("#sessionNextTitle").textContent=empty?"上から部位を選んで":e?e.n:doneLabel;
+    q("#sessionNextDetail").textContent=empty?"選ぶと今日の種目が出ます":e?e.s:workoutDone&&!abDone()?"膝コロ 6〜12回 × 3セット":"タイマー途中でも終了してOK";
+  }
+  function updatePickerState(){
+    picker.querySelectorAll(".today-chip").forEach(b=>b.setAttribute("aria-pressed",selected.includes(b.dataset.group)?"true":"false"));
+    q("#todayPickerCount").textContent=`${selected.length}/4 選択`;q("#todayClear").disabled=!selected.length;
+  }
+  function updateStartState(){
+    const start=q("#sessionStart");start.disabled=!selected.length;
+    if(!sessionEnd())start.textContent=selected.length?"▶ 30分トレーニング開始":"上から部位を選んで開始";
+  }
+  function setSessionStatus(text){q("#sessionStatus").textContent=text||"");}
+  function destroySessionPlayer(){
+    playerToken++;
+    if(sessionPlayer&&typeof sessionPlayer.destroy==="function"){try{sessionPlayer.destroy();}catch(e){}}
+    sessionPlayer=null;
+  }
+  function loadYouTubeApi(){
+    if(window.YT&&typeof window.YT.Player==="function")return Promise.resolve(window.YT);
+    if(ytApiPromise)return ytApiPromise;
+    ytApiPromise=new Promise((resolve,reject)=>{
+      const previous=window.onYouTubeIframeAPIReady;
+      const timer=setTimeout(()=>reject(new Error("YouTube API timeout")),12000);
+      window.onYouTubeIframeAPIReady=()=>{
+        clearTimeout(timer);if(typeof previous==="function")try{previous();}catch(e){}
+        resolve(window.YT);
+      };
+      const s=document.createElement("script");s.src="https://www.youtube.com/iframe_api";s.async=true;
+      s.onerror=()=>{clearTimeout(timer);reject(new Error("YouTube API load error"));};document.head.appendChild(s);
+    });
+    return ytApiPromise;
+  }
+  function fallbackPlayer(message){
+    const v=currentVideo(),host=q("#sessionVideo");
+    host.innerHTML=`<div class="session-video-state"><div><b>この画面では再生できません</b><span>${message}</span><a href="${youtubeUrl(v)}" target="_blank" rel="noopener">YouTubeで開く ↗</a></div></div>`;
+    setSessionStatus("埋め込みが使えないため、YouTubeで開けます。");
+  }
+  function emptyPlayer(){
+    q("#sessionVideo").innerHTML='<div class="session-video-state"><div><b>部位が未選択です</b><span>上の「今日やる部位」から1つ以上選んでください</span></div></div>';
+    setSessionStatus("部位を選ぶと動画候補が表示されます。");
+  }
+  function nextPlayableIndex(){
+    for(let step=1;step<=sessionQueue.length;step++){
+      const i=(activeVideoIndex+step)%sessionQueue.length;
+      if(!failedVideoIds.has(sessionQueue[i].id))return i;
+    }
+    return -1;
+  }
+  function handlePlayerError(code){
+    const v=currentVideo();if(v)failedVideoIds.add(v.id);
+    const next=nextPlayableIndex();
+    if(next>=0){
+      activeVideoIndex=next;
+      showToast("再生できない動画を飛ばして次へ切り替えた");
+      mountSessionPlayer(true,"次の候補へ切替中…");
+      return;
+    }
+    destroySessionPlayer();fallbackPlayer(`候補をすべて確認しました（エラー ${code}）`);
+  }
+  function mountSessionPlayer(autoplay=false,status="動画を読み込み中…"){
+    destroySessionPlayer();syncSessionQueue();updateQuickContext();
+    const v=currentVideo(),host=q("#sessionVideo");
+    if(!v){emptyPlayer();return;}
+    const token=playerToken;
+    host.innerHTML='<div class="session-video-state"><div><b>読み込み中</b><span>再生できない場合は次の候補へ自動で切り替えます</span></div></div>';
+    setSessionStatus(status);
+    loadYouTubeApi().then(YT=>{
+      if(token!==playerToken)return;
+      host.innerHTML='<div class="session-player-mount" id="gainzSessionPlayer"></div>';
+      const vars={rel:0,playsinline:1,autoplay:autoplay?1:0};
+      if(v.start)vars.start=v.start;if(v.end)vars.end=v.end;
+      if(location.protocol.startsWith("http"))vars.origin=location.origin;
+      sessionPlayer=new YT.Player("gainzSessionPlayer",{
+        host:"https://www.youtube-nocookie.com",videoId:v.id,playerVars:vars,
+        events:{
+          onReady:e=>{if(token!==playerToken)return;setSessionStatus("再生準備OK");if(autoplay)try{e.target.playVideo();}catch(err){}},
+          onError:e=>{if(token===playerToken)handlePlayerError(e.data);}
+        }
+      });
+    }).catch(()=>{if(token===playerToken){ytApiPromise=null;fallbackPlayer("YouTubeの読み込みに失敗しました");}});
+  }
+  const legacyResetSession=resetSession;
+  resetSession=function(showMessage){destroySessionPlayer();legacyResetSession(showMessage);setSessionStatus("");updateQuickContext();updateStartState();};
+  const legacyUpdateSessionClock=updateSessionClock;
+  updateSessionClock=function(){
+    const wasActive=sessionEnd()>Date.now();legacyUpdateSessionClock();
+    if(wasActive&&sessionEnd()===0)destroySessionPlayer();
+    updateQuickContext();
+  };
+  showSession=function(autoplay){
+    q("#sessionStart").hidden=true;q("#sessionPanel").hidden=false;
+    q("#sessionNote").textContent=W.today?.goal?`動画後は下の今日の種目へ。${W.today.goal}種目のあとアブローラー確認。30分を超えそうなら通常種目を1つ減らしてOK。`:"上から部位を選んでください。";
+    clearSessionInterval();updateSessionClock();
+    if(sessionEnd()>Date.now())sessionIv=setInterval(updateSessionClock,1000);
+    mountSessionPlayer(autoplay);
+  };
+  q("#sessionReplay").addEventListener("click",()=>{
+    if(sessionPlayer&&typeof sessionPlayer.seekTo==="function"){
+      const v=currentVideo();try{sessionPlayer.seekTo(v?.start||0,true);sessionPlayer.playVideo();setSessionStatus("先頭から再生中");return;}catch(e){}
+    }
+    mountSessionPlayer(true);
+  });
+  q("#sessionNextVideo").addEventListener("click",()=>{
+    if(!sessionQueue.length)return;
+    activeVideoIndex=(activeVideoIndex+1)%sessionQueue.length;failedVideoIds.delete(currentVideo().id);
+    mountSessionPlayer(true,"次の動画へ切替中…");
+  });
+  q("#list").addEventListener("click",()=>setTimeout(()=>{syncCompletedBank();updateQuickContext();},0));
+
+  function applyToday(){
+    const doneNames=completedNamesFromStoredPlan();
+    updatePickerState();
+    W.today=makePlan();NAME.today="TODAY";
+    saveTodayPlan(doneNames);
+    syncSessionQueue();
+    const labels=selected.map(k=>groups[k].label);
+    q("#quickTitle").textContent=selected.length?labels.join("・")+"から30分":"部位を選んでスタート";
+    q(".quick-sub").textContent=selected.length?`筋肉痛のある部位を外したメニュー。今日の${W.today.goal}種目＋最後にアブローラー確認。30分を超えそうなら通常種目を1つ減らしてOK。`:"上のボタンから今日やる部位を選ぶと、動画と種目が表示されます。";
+    q("#sessionNote").textContent=selected.length?`動画後は下の今日の種目へ。${W.today.goal}種目のあとアブローラー確認。30分を超えそうなら通常種目を1つ減らしてOK。`:"上から部位を選んでください。";
+    day="today";render();
+    q("#secTtl").innerHTML=selected.length?`💪 今日の種目 — <b style="color:var(--text)">${W.today.goal}種目できたら十分</b> ・ 最後にアブローラー確認`:'💪 今日の種目 — <b style="color:var(--text)">部位を選ぶと表示</b>';
+    q("#vidSec").textContent="🎬 今日できる一緒にやる動画";
+    abReminder.hidden=!selected.length;updateAbReminder();
+    updateQuickContext();updateStartState();
+    if(sessionEnd()>Date.now())showSession(false);
+  }
+
+  document.querySelectorAll(".tab").forEach(t=>t.addEventListener("click",()=>{
+    q("#secTtl").style.marginTop="18px";
+  },true));
+
+  const quick=q(".quick");
+  const sec=q("#secTtl");
+  const list=q("#list");
+  const vidSec=q("#vidSec");
+  const videos=q("#videos");
+  const tabs=q(".tabs");
+  const meta=q(".meta");
+  const cal=q(".cal");
+  const lower=document.createElement("div");
+  lower.className="sec lower-zone-title";
+  lower.textContent="📊 履歴・従来メニュー — 必要な時だけ見る";
+
+  quick.after(vidSec);
+  vidSec.after(videos);
+  videos.after(sec);
+  sec.after(list);
+  list.after(abReminder);
+  abReminder.after(lower);
+  lower.after(tabs);
+  tabs.after(meta);
+  meta.after(cal);
+
+  const ver=q(".ver");if(ver)ver.textContent="Gainz v18.3 · 2026.08.28";
+  applyToday();
+})();
+</script>
+
+<script>
+const frame=document.getElementById("gainzFrame");
+frame.addEventListener("load",()=>{
+  const d=frame.contentDocument;
+  const boot=document.getElementById("boot");
+  try{
+    const st=d.createElement("style");
+    st.textContent=document.getElementById("patchCss").textContent;
+    d.head.appendChild(st);
+    const sc=d.createElement("script");
+    sc.textContent=document.getElementById("patchSource").textContent;
+    d.body.appendChild(sc);
+    boot.remove();
+  }catch(e){
+    boot.textContent="Gainzの更新読み込みに失敗。再読み込みして。";
+    console.error(e);
+  }
+});
+</script>
+</body>
+</html>
