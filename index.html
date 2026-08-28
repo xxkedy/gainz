@@ -255,14 +255,15 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#0a0a0c}
   const abReminder=document.createElement("div");
   abReminder.className="ab-reminder";
   abReminder.innerHTML='<div class="ab-reminder-copy"><strong>🔥 毎回｜アブローラー</strong><span>膝コロ 6〜12回 × 3セット。30分を超えそうなら通常種目を1つ減らしてこれ優先。腹筋に強い筋肉痛がある日はスキップ。</span></div><div class="ab-reminder-actions"><a href="https://youtu.be/R4vb8poJnv0?t=100" target="_blank" rel="noopener">▶ 一緒にやる</a><button id="abReminderDone" type="button">✓ やった</button></div>';
+  const abReminderDone=abReminder.querySelector("#abReminderDone");
   function abDoneKey(){return "gainz.v18.abRollerDone."+today();}
   function abDone(){return localStorage.getItem(abDoneKey())==="1";}
   function updateAbReminder(){
     const done=abDone();
     abReminder.classList.toggle("is-done",done);
-    q("#abReminderDone").textContent=done?"✓ 今日やった":"✓ やった";
+    abReminderDone.textContent=done?"✓ 今日やった":"✓ やった";
   }
-  q("#abReminderDone").addEventListener("click",()=>{
+  abReminderDone.addEventListener("click",()=>{
     const next=!abDone();
     if(next)localStorage.setItem(abDoneKey(),"1");else localStorage.removeItem(abDoneKey());
     updateAbReminder();updateQuickContext();
