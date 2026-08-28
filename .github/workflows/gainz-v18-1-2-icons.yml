@@ -1,0 +1,49 @@
+name: Gainz v18.1.2 muscle panel icons
+
+on:
+  push:
+    paths:
+      - '.github/workflows/gainz-v18-1-2-icons.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Restore visual muscle icons
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+          reps = [
+            ('chest:{label:"胸",sub:', 'chest:{icon:"🫁",label:"胸",sub:'),
+            ('abs:{label:"腹筋",sub:', 'abs:{icon:"🧱",label:"腹筋",sub:'),
+            ('back:{label:"背中",sub:', 'back:{icon:"🪽",label:"背中",sub:'),
+            ('arms:{label:"肩腕",sub:', 'arms:{icon:"💪",label:"肩腕",sub:'),
+            ('b.textContent=g.label;', 'b.innerHTML=`<span class="today-chip-icon">${g.icon}</span><span>${g.label}</span>`;'),
+            ('Gainz v18.1.1を準備中…', 'Gainz v18.1.2を準備中…'),
+            ('src="./legacy.html?v=18.1.1"', 'src="./legacy.html?v=18.1.2"'),
+            ('Gainz v18.1.1 · 2026.08.28', 'Gainz v18.1.2 · 2026.08.28')
+          ]
+          for old,new in reps:
+            if old not in s:
+              raise SystemExit(f'target not found: {old}')
+            s = s.replace(old,new,1)
+          css_old = '.today-chip[aria-pressed="true"]::after{content:"✓";position:absolute;top:5px;right:6px;font-size:9px;line-height:1}'
+          css_new = css_old + '\n.today-chip{height:60px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px}\n.today-chip-icon{font-size:19px;line-height:1;filter:saturate(.9)}'
+          if css_old not in s:
+            raise SystemExit('chip css target not found')
+          s = s.replace(css_old,css_new,1)
+          p.write_text(s,encoding='utf-8')
+          PY
+      - name: Commit panel icons
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git commit -m "Gainz v18.1.2: restore muscle panel icons"
+          git push
