@@ -19,30 +19,18 @@ jobs:
           from pathlib import Path
           p = Path('index.html')
           s = p.read_text(encoding='utf-8')
-
-          # Exercise order: ab roller first.
-          s = s.replace(
-              'abs:{label:"腹筋",sub:"下腹・腹全体",names:["レッグレイズ","腹筋ローラー","サポート・ニーレイズ","ロシアンツイスト"],videos:[',
-              'abs:{label:"腹筋",sub:"下腹・腹全体",names:["腹筋ローラー","レッグレイズ","サポート・ニーレイズ","ロシアンツイスト"],videos:[',
-              1
-          )
-
-          # Video order: ab roller first, then leg raise.
-          old = '''abs:{label:"腹筋",sub:"下腹・腹全体",names:["腹筋ローラー","レッグレイズ","サポート・ニーレイズ","ロシアンツイスト"],videos:[
-      {n:"レッグレイズ｜下腹を一緒にやる",u:"https://youtu.be/C9xfentB4QA"},
-      {n:"腹筋 2分｜アブローラー｜1:40〜4:00",u:"https://youtu.be/R4vb8poJnv0?start=100&end=240"},'''
-          new = '''abs:{label:"腹筋",sub:"下腹・腹全体",names:["腹筋ローラー","レッグレイズ","サポート・ニーレイズ","ロシアンツイスト"],videos:[
-      {n:"腹筋 2分｜アブローラー｜1:40〜4:00",u:"https://youtu.be/R4vb8poJnv0?start=100&end=240"},
-      {n:"レッグレイズ｜下腹を一緒にやる",u:"https://youtu.be/C9xfentB4QA"},'''
-          if old not in s:
+          old_order = 'abs:{label:"腹筋",sub:"下腹・腹全体",names:["レッグレイズ","腹筋ローラー","サポート・ニーレイズ","ロシアンツイスト"],videos:['
+          new_order = 'abs:{label:"腹筋",sub:"下腹・腹全体",names:["腹筋ローラー","レッグレイズ","サポート・ニーレイズ","ロシアンツイスト"],videos:['
+          if old_order in s:
+              s = s.replace(old_order, new_order, 1)
+          old_video = 'abs:{label:"腹筋",sub:"下腹・腹全体",names:["腹筋ローラー","レッグレイズ","サポート・ニーレイズ","ロシアンツイスト"],videos:[\n      {n:"レッグレイズ｜下腹を一緒にやる",u:"https://youtu.be/C9xfentB4QA"},\n      {n:"腹筋 2分｜アブローラー｜1:40〜4:00",u:"https://youtu.be/R4vb8poJnv0?start=100&end=240"},'
+          new_video = 'abs:{label:"腹筋",sub:"下腹・腹全体",names:["腹筋ローラー","レッグレイズ","サポート・ニーレイズ","ロシアンツイスト"],videos:[\n      {n:"腹筋 2分｜アブローラー｜1:40〜4:00",u:"https://youtu.be/R4vb8poJnv0?start=100&end=240"},\n      {n:"レッグレイズ｜下腹を一緒にやる",u:"https://youtu.be/C9xfentB4QA"},'
+          if old_video not in s:
               raise SystemExit('abs video order target not found')
-          s = s.replace(old, new, 1)
-
-          # Cache bust / visible version.
+          s = s.replace(old_video, new_video, 1)
           s = s.replace('Gainz v18.1を準備中…', 'Gainz v18.1.1を準備中…', 1)
           s = s.replace('src="./legacy.html?v=18.1"', 'src="./legacy.html?v=18.1.1"', 1)
           s = s.replace('Gainz v18.1 · 2026.08.25', 'Gainz v18.1.1 · 2026.08.28', 1)
-
           p.write_text(s, encoding='utf-8')
           PY
       - name: Commit patch
@@ -50,5 +38,5 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add index.html
-          git commit -m "Gainz v18.1.1: put ab roller first"
+          git commit -m "Gainz v18.1.1 put ab roller first"
           git push
