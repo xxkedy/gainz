@@ -12,8 +12,8 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#0a0a0c}
 </style>
 </head>
 <body>
-<div id="boot">Gainz v18.1.4を準備中…</div>
-<iframe id="gainzFrame" src="./legacy.html?v=18.1.4" title="Gainz"></iframe>
+<div id="boot">Gainz v18.1.5を準備中…</div>
+<iframe id="gainzFrame" src="./legacy.html?v=18.1.5" title="Gainz"></iframe>
 
 <script id="patchCss" type="text/plain">
 .lower-zone-title{margin-top:32px!important;color:var(--dim)!important}
@@ -26,6 +26,9 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#0a0a0c}
 .quick-fact{min-width:0;padding:11px 12px;background:rgba(255,255,255,.035);border:1px solid var(--line);border-radius:12px}
 .quick-fact-label{display:block;color:var(--dim);font-size:9.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase}
 .quick-fact strong{display:block;overflow:hidden;margin-top:4px;color:var(--text);font-size:13px;line-height:1.35;text-overflow:ellipsis;white-space:nowrap}
+.quick-video-thumb{width:min(100%,240px);aspect-ratio:16/9;margin-top:10px;overflow:hidden;border:1px solid var(--line);border-radius:10px;background:#050506}
+.quick-video-thumb[hidden]{display:none}
+.quick-video-thumb img{display:block;width:100%;height:100%;object-fit:cover}
 .session-top{margin-top:4px}
 .session-video{position:relative}
 .session-player-mount{width:100%;height:100%}
@@ -68,7 +71,7 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#0a0a0c}
   const compact=u=>String(u||"").trim();
   const versionBadge=document.createElement("div");
   versionBadge.className="gainz-version-top";
-  versionBadge.textContent="v18.1.4";
+  versionBadge.textContent="v18.1.5";
   q(".wrap").appendChild(versionBadge);
 
   function items(){
@@ -251,7 +254,7 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#0a0a0c}
 
   const overview=document.createElement("div");
   overview.className="quick-overview";
-  overview.innerHTML='<div class="quick-fact"><span class="quick-fact-label">今の動画</span><strong id="quickVideoTitle">—</strong></div><div class="quick-fact"><span class="quick-fact-label">次の種目</span><strong id="quickNextTitle">—</strong></div>';
+  overview.innerHTML='<div class="quick-fact"><span class="quick-fact-label">今の動画</span><strong id="quickVideoTitle">—</strong><div class="quick-video-thumb" id="quickVideoThumb" hidden><img id="quickVideoThumbImg" alt=""></div></div><div class="quick-fact"><span class="quick-fact-label">次の種目</span><strong id="quickNextTitle">—</strong></div>';
   q(".quick-sub").after(overview);
 
   const videoMeta=document.createElement("div");
@@ -323,6 +326,17 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#0a0a0c}
     const empty=!W.today?.ex?.length;
     const doneLabel=`今日の${W.today?.goal||4}種目完了 ✓`;
     q("#quickVideoTitle").textContent=empty?"部位を選ぶと表示":v?v.title:"動画候補なし";
+    const thumb=q("#quickVideoThumb"),thumbImg=q("#quickVideoThumbImg");
+    if(!empty&&v){
+      thumb.hidden=false;
+      if(thumbImg.dataset.videoId!==v.id){
+        thumbImg.src=`https://i.ytimg.com/vi/${v.id}/hqdefault.jpg`;
+        thumbImg.dataset.videoId=v.id;
+      }
+      thumbImg.alt=`${v.title} サムネイル`;
+    }else{
+      thumb.hidden=true;thumbImg.removeAttribute("src");delete thumbImg.dataset.videoId;thumbImg.alt="";
+    }
     q("#sessionVideoTitle").textContent=empty?"部位未選択":v?v.title:"動画候補なし";
     q("#sessionVideoCount").textContent=v?`${activeVideoIndex+1} / ${sessionQueue.length}`:"";
     q("#sessionYouTube").href=youtubeUrl(v);
@@ -479,7 +493,7 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#0a0a0c}
   tabs.after(meta);
   meta.after(cal);
 
-  const ver=q(".ver");if(ver)ver.textContent="Gainz v18.1.4 · 2026.09.02";
+  const ver=q(".ver");if(ver)ver.textContent="Gainz v18.1.5 · 2026.09.02";
   applyToday();
 })();
 </script>
