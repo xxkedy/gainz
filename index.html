@@ -79,7 +79,7 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#0a0a0c}
   const fightzDone=localStorage.getItem("fightz.v01.lastQuietDate")===fightzDayKey();
   const fightzPre=document.createElement("section");
   fightzPre.className="fightz-pre"+(fightzDone?" done":"");
-  fightzPre.innerHTML='<div class="fightz-pre-copy"><b>🥊 Fightz 7分 '+(fightzDone?"✓":"→")+'</b><span>'+(fightzDone?"技術練習済み。今日はそのままGainzへ。":"新しいSkillは筋トレ前。Quiet Shadowを先に終える。")+'</span></div><a href="https://xxkedy.github.io/keyz/fightz/?from=gainz">'+(fightzDone?"開く":"先にやる")+'</a>';
+  fightzPre.innerHTML='<div class="fightz-pre-copy"><b>🥊 Strikez 7分 '+(fightzDone?"✓":"→")+'</b><span>'+(fightzDone?"技術練習済み。今日はそのままGainzへ。":"新しいSkillは筋トレ前。Quiet Shadowを先に終える。")+'</span></div><a href="https://xxkedy.github.io/keyz/fightz/?from=gainz">'+(fightzDone?"開く":"先にやる")+'</a>';
   q(".quick").before(fightzPre);
 
   function items(){
